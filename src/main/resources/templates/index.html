@@ -1,0 +1,252 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./asset/css/style.css">
+    <!-- <link rel="stylesheet" href="./asset/fonts/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="./asset/fonts/fontawesome-pro-5.15.3-web/css/all.css"> -->
+</head>
+<body>
+    <!-- https://www.w3schools.com/w3css/tryw3css_templates_band.htm -->
+    <!-- .wrapper / main / app de tao the div co class wrapper -->
+    <!-- cách chọn tất cả id
+        b1: bôi đen id=
+        b2: ctrl shift l
+        b3: phím mũi tên -> tới vị trí bắt đầu chọn
+        b4: alt shift ->
+        error: chú ý xem nó chọn cái nào
+        Lưu ý: nếu m chọn id= thì sẽ không được, vì nó có chọn id= ở b1, và bên phải trống nên không chọn được
+    -->
+   <div id="main">
+       <div id="header">
+        <!-- ul#nav>li*5>a -->
+        <!-- Begin: Nav -->
+        <ul id="nav">
+            <li><a href="">Home</a></li>
+            <li><a href="">Band</a></li>
+            <li><a href="">Tour</a></li>
+            <li><a href="">Contact</a></li>
+            <li>
+                <a href="">
+                    More<i class="fas fa-caret-down"></i>  
+                </a>
+                <ul class="subnav">
+                    <li>
+                        <a href="#">Merchandise</a>
+                        <ul class="subnav_2a">
+                            <li><a href="#">item_1</a></li>
+                            <li><a href="#">item_2</a></li>
+                            <li><a href="#">item_3</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Extras</a>
+                        <ul class="subnav_2b">
+                            <li><a href="#">item_4</a></li>
+                            <li><a href="#">item_5</a></li>
+                            <li><a href="#">item_6</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Media</a></li>
+                </ul>
+            </li>
+
+        </ul>
+        <!-- End: Nav -->
+
+        <!-- Begin: Search button -->
+        <div class="search-btn">
+            <i class="search-icon fas fa-search"></i>
+        </div>
+        <!-- End: Search button-->
+
+       </div>
+       
+       <div id="slider">
+            <div class="text-content">
+                <h2 class="text-heading">Chicago</h2>
+                <p class="text-description">Thank you, Chicago - A night we won't forget.</p>
+            </div>
+       </div>
+       
+       <div id="content">
+           <!-- Begin: Band -->
+           <div class="band">
+               <div class="content-section">
+                    <h2 class="heading-section">
+                        The Band
+                    </h2>
+                    <p class="slogan-section">We love music</p>
+                    <p class="about-text">
+                        We have created a fictional band website. Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis 
+                        aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+                        culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing 
+                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                        aliquip ex ea commodo consequat.
+                    </p>
+                    <div class="member-list">
+                        
+                        <div class="member">
+                            <p class="member-name">Name</p>
+                            <img src="/asset/img/bandmember.jpg" alt="name" class="member-img">
+                        </div>
+                        <div class="member">
+                            <p class="member-name">Name</p>
+                            <img src="/asset/img/bandmember.jpg" alt="name" class="member-img">
+                        </div>
+                        <div class="member">
+                            <p class="member-name">Name</p>
+                            <img src="/asset/img/bandmember.jpg" alt="name" class="member-img">
+                        </div>
+                        <!-- clear:both de 3 div float left nam trong div parent -->
+                        <div class="clear"></div>
+                    </div>
+                   
+               </div>
+            </div>
+            <!-- End: Band -->
+
+            <!-- Begin: Tour -->
+            <div class="tour">
+                <div class="content-section">
+                    <h2 class="heading-section">
+                        TOUR DATES
+                    </h2>
+                    <p class="slogan-section">Remember to book your tickets!</p>
+                    
+                    <ul class="list-tickets">
+                        <li>September
+                            <span class="sold-out">Sold out</span>
+                        </li>
+                        <li>October
+                            <span class="sold-out">Sold out</span>
+                        </li>
+                        <li>November
+                            <span class="number-tickets">3</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="tours-list">
+                        <div class="tour-item">
+                            <img class ="img-city" src="/asset/img/tour/newyork.jpg" alt="" />
+                            <div class="content-tour">
+                                <p class="city-name">New York</p>
+                                <p class="date-tour">Fri 27 Nov 2016</p>
+                                <p class="intro-tour">Praesent tincidunt sed tellus 
+                                    ut rutrum sed vitae justo.</p>
+                                    <a href="" class="buy-btn">Buy Tickets</a>
+                            </div>
+                            
+                        </div>
+
+                        <div class="tour-item">
+                            <img class ="img-city" src="/asset/img/tour/paris.jpg" alt="" />
+                            <div class="content-tour">
+                                <p class="city-name">Paris</p>
+                            <p class="date-tour">Sat 28 Nov 2016</p>
+                            <p class="intro-tour">Praesent tincidunt sed tellus 
+                                ut rutrum sed vitae justo.</p>
+                            <a href="" class="buy-btn">Buy Tickets</a>
+                            </div>
+                            
+                        </div>
+
+                        <div class="tour-item">
+                            <img class ="img-city" src="/asset/img/tour/sanfran.jpg" alt="" />
+                            <div class="content-tour">
+                                <p class="city-name">San Francisco</p>
+                                <p class="date-tour">Sun 29 Nov 2016</p>
+                                <p class="intro-tour">Praesent tincidunt sed tellus 
+                                ut rutrum sed vitae justo.</p>
+                                <a href="" class="buy-btn">Buy Tickets</a>
+                            </div>
+                            
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+           <!-- End: Tour -->
+
+           <!-- Begin: Contact -->
+
+            <div class="contact">
+                <div class="content-section">
+                    <h2 class="heading-section">Contact</h2>
+                    <p class="slogan-section">Fan? Drop a note!</p>
+
+                    <div class="content-contact">
+                        <div class="container ">
+                            <div class="info-contact two-column">
+                                <ul>
+
+                                    <li>
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Chicago, US
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-phone-alt"></i>
+                                        Phone: +00 151515
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-envelope"></i>
+                                        Email: mail@mail.com
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="request-customer two-column">
+                                <div class="container ">
+                                    <div class=" two-column">
+                                        <input class="name-column" type="text" class="form-control" placeholder="Name">
+                                    </div>
+                                    <div class=" two-column">
+                                        <input class="mail-column" type="text" class="form-control" placeholder="Mail">
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                
+                                <div class="message-row">
+                                    <input type="text" class="message-input" placeholder="Message">
+                                </div>
+                                <a href="#" class="send-btn">Send</a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                
+                </div>
+            
+            </div>
+            
+            <!-- End : Contact -->
+           
+            <!-- Begin: Map -->
+            <div class="map">
+                <img src="/asset/img/map/map.jpg" alt="map">
+            </div>
+            
+       </div>
+       
+       <div id="footer">
+           
+        <div class="socials-list">
+            <a href=""><i class="fab fa-facebook-square"></i></a>
+            <a href=""><i class="fab fa-instagram"></i></a>
+            <a href=""><i class="fab fa-snapchat"></i></i></a>
+            <a href=""><i class="fab fa-pinterest-p"></i></a>
+            <a href=""><i class="fab fa-twitter"></i></a>
+            <a href=""><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p>Powered by <a href="">w3.css</a></p>
+           
+            
+       </div>
+   </div>
+</body>
+</html>
