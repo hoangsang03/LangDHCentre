@@ -1,6 +1,5 @@
 package com.langdaihoc.langdhcentre.entity.subEntity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +12,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString(callSuper = true)
 @Entity
-public class Beverage extends BaseService {
-    protected Beverage() {
-    }
+public class OtherService extends BaseService{
+    protected OtherService() {};
+
 
 
 

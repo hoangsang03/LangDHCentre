@@ -27,7 +27,7 @@ public class Category {
     private Long categoryId;
 
     @Column( name = "category_name")
-    private String category_name;
+    private String categoryName;
 
     @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BaseStore> stores = new ArrayList<>();
@@ -37,19 +37,19 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return Objects.equals(categoryId, category.categoryId) && Objects.equals(category_name, category.category_name);
+        return Objects.equals(categoryId, category.categoryId) && Objects.equals(categoryName, category.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryId, category_name);
+        return Objects.hash(categoryId, categoryName);
     }
 
     @Override
     public String toString() {
         return "Category{" +
                 "categoryId=" + categoryId +
-                ", category_name='" + category_name + '\'' +
+                ", category_name='" + categoryName + '\'' +
                 '}';
     }
 }

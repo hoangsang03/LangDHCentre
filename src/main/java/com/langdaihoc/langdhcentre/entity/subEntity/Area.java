@@ -33,6 +33,7 @@ public class Area {
             joinColumns = @JoinColumn(name = "area_id", referencedColumnName = "area_id"),
             inverseJoinColumns = @JoinColumn(name = "nearly_area_id", referencedColumnName = "area_id")
     )
+    @Builder.Default
     private List<Area> nearAreas = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "area", fetch = FetchType.LAZY)
@@ -57,5 +58,12 @@ public class Area {
                 "areaId=" + areaId +
                 ", nameArea='" + nameArea + '\'' +
                 '}';
+    }
+
+    public void addNearlyArea(Area nearlyAreaInput) {
+        if(this.nearAreas == null){
+            this.nearAreas = new ArrayList<>();
+        }
+        this.nearAreas.add(nearlyAreaInput);
     }
 }

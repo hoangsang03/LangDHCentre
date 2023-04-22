@@ -23,11 +23,11 @@ public class Revenue {
     private Long revenueId;
 
     @ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
     private BaseStore store;
 
-    @OneToMany(mappedBy = "revenue", cascade = CascadeType.ALL)
-    private List<RevenueDetail> revenueDetail = new ArrayList<>();
+    @OneToOne(mappedBy = "revenue", cascade = CascadeType.ALL)
+    private RevenueDetail revenueDetail;
 
     @Column(name = "total_month_revenue")
     private BigDecimal totalMonthRevenue;

@@ -14,9 +14,9 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @Entity
-@Table(name = "images")
-public class Image {
-    protected Image() {};
+@Table(name = "storeImages")
+public class StoreImage {
+    protected StoreImage() {};
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", nullable = false)
@@ -26,27 +26,28 @@ public class Image {
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     private BaseStore store;
 
-    @Column(name = "url_image")
-    private String urlImage;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Image image = (Image) o;
-        return Objects.equals(imageId, image.imageId) && Objects.equals(urlImage, image.urlImage);
+        StoreImage storeImage = (StoreImage) o;
+        return Objects.equals(imageId, storeImage.imageId) && Objects.equals(imageUrl, storeImage.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(imageId, urlImage);
+        return Objects.hash(imageId, imageUrl);
     }
 
     @Override
     public String toString() {
-        return "Image{" +
+        return "StoreImage{" +
                 "imageId=" + imageId +
-                ", urlImage='" + urlImage + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 }

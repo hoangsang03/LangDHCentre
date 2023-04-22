@@ -22,16 +22,19 @@ public class Verification {
     @Column(name = "verification_id", nullable = false)
     private Long verificationId;
 
+    @Column(name = "verification_name")
+    private String verificationName;
+
     @Column(name = "created_date")
     @CreationTimestamp
     private Date createdDate;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "operator_id", referencedColumnName = "operator_id")
+    @JoinColumn(nullable = false, name = "operator_id", referencedColumnName = "operator_id")
     private Operator operator;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
     private BaseStore store;
 
 }

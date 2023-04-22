@@ -45,7 +45,7 @@ public class BaseService {
     }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", referencedColumnName = "menu_id")
+    @JoinColumn(nullable = false, name = "menu_id", referencedColumnName = "menu_id")
     private Menu menu;
 
     @Override

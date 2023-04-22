@@ -21,8 +21,8 @@ public class Address {
     @Column(name = "address_id", nullable = false)
     private Long addressId;
 
-    @OneToOne(mappedBy = "address",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
     private BaseStore store;
 
     @Column(name = "city")
@@ -49,19 +49,18 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(addressId, address.addressId) && Objects.equals(store, address.store) && Objects.equals(city, address.city) && Objects.equals(district, address.district) && Objects.equals(ward, address.ward) && Objects.equals(street, address.street) && Objects.equals(houseNumber, address.houseNumber);
+        return Objects.equals(addressId, address.addressId) && Objects.equals(city, address.city) && Objects.equals(district, address.district) && Objects.equals(ward, address.ward) && Objects.equals(street, address.street) && Objects.equals(houseNumber, address.houseNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(addressId, store, city, district, ward, street, houseNumber);
+        return Objects.hash(addressId, city, district, ward, street, houseNumber);
     }
 
     @Override
     public String toString() {
         return "Address{" +
                 "addressId=" + addressId +
-                ", store=" + store +
                 ", city='" + city + '\'' +
                 ", district='" + district + '\'' +
                 ", ward='" + ward + '\'' +

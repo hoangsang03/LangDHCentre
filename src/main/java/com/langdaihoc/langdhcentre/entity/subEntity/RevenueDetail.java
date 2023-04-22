@@ -17,8 +17,8 @@ public class RevenueDetail {
     @Column(name = "revenue_detail_id", nullable = false)
     private Long revenueDetailId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "revenue_id", referencedColumnName = "revenue_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "revenue_id", referencedColumnName = "revenue_id")
     private Revenue revenue;
 
 }
