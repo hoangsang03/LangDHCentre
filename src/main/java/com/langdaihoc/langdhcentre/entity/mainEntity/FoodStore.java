@@ -1,2 +1,7 @@
-package com.langdaihoc.langdhcentre.entity.mainEntity;public class FoodStore {
+package com.langdaihoc.langdhcentre.entity.mainEntity;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class FoodStore extends BaseStore{
 }
