@@ -1,7 +1,9 @@
 package com.langdaihoc.langdhcentre.entity.mainEntity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.langdaihoc.langdhcentre.entity.subEntity.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +11,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
+
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,10 +73,14 @@ public class BaseStore {
 
 
     @Column(name = "opening_time")
-    private LocalTime openingTime;
+    @JsonFormat(pattern = "HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    private Date openingTime;
 
     @Column(name = "closing_time")
-    private LocalTime closingTime;
+    @JsonFormat(pattern = "HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    private Date closingTime;
 
     @Column(name = "is_auto_open_setting")
     @Builder.Default
@@ -103,10 +110,14 @@ public class BaseStore {
     private Date createdDate;
 
     @Column(name = "operation_start_date")
-    private LocalDate operationStartDate;
+    @JsonFormat(pattern = "YYYY-MM-DD")
+    @Temporal(TemporalType.DATE)
+    private Date operationStartDate;
 
     @Column(name = "operation_end_date")
-    private LocalDate operationEndDate;
+    @JsonFormat(pattern = "YYYY-MM-DD")
+    @Temporal(TemporalType.DATE)
+    private Date operationEndDate;
 
 
     @Column(name = "store_url")
@@ -140,6 +151,7 @@ public class BaseStore {
     private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<StoreImage> storeImages = new ArrayList<>();
 
     @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
@@ -196,60 +208,139 @@ public class BaseStore {
                 '}';
     }
 
-    public void addVerification(Verification verificationInput) {
+    //<editor-fold desc="addObjectIntoList">
+    public boolean addVerification(Verification verificationInput) {
         verificationInput.setStore(this);
-        if(this.verifications == null){
+        if (this.verifications == null) {
             this.verifications = new ArrayList<>();
         }
         this.verifications.add(verificationInput);
+        return true;
     }
 
-    public void addRevenue(Revenue revenueInput){
+    public boolean addRevenue(Revenue revenueInput) {
         revenueInput.setStore(this);
-        if(this.revenues == null){
+        if (this.revenues == null) {
             this.revenues = new ArrayList<>();
         }
         this.revenues.add(revenueInput);
+        return true;
     }
-    public void addRentalFee(RentalFee rentalFeeInput){
+
+    public boolean addRentalFee(RentalFee rentalFeeInput) {
         rentalFeeInput.setStore(this);
-        if(this.rentalFees == null){
+        if (this.rentalFees == null) {
             this.rentalFees = new ArrayList<>();
         }
         this.rentalFees.add(rentalFeeInput);
+        return true;
     }
 
-    public void addRating(Rating ratingInput){
+    public boolean addRating(Rating ratingInput) {
         ratingInput.setStore(this);
-        if(this.ratings == null){
+        if (this.ratings == null) {
             this.ratings = new ArrayList<>();
         }
         this.ratings.add(ratingInput);
+        return true;
     }
 
-    public void addStoreImage(StoreImage storeImageInput){
+    public boolean addStoreImage(StoreImage storeImageInput) {
         storeImageInput.setStore(this);
-        if(this.storeImages == null){
+        if (this.storeImages == null) {
             this.storeImages = new ArrayList<>();
         }
         this.storeImages.add(storeImageInput);
+        return true;
     }
-    public void addUtility(Utility utilityInput){
-        if(this.utilities == null){
+
+    public boolean addUtility(Utility utilityInput) {
+        if (this.utilities == null) {
             this.utilities = new ArrayList<>();
         }
         this.utilities.add(utilityInput);
+        return true;
     }
-    public void addCategory(Category categoryInput){
-        if(this.categories == null){
+
+    public boolean addCategory(Category categoryInput) {
+        if (this.categories == null) {
             this.categories = new ArrayList<>();
         }
         this.categories.add(categoryInput);
+        return true;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="UpdateAddress&Menu">
+    public Address updateAdress(@NotNull Address addressInput) {
+        addressInput.setStore(this);
+        this.address = addressInput;
+        return this.address;
+    }
+
+    public Menu updateMenu(@NotNull Menu menuInput) {
+        menuInput.setStore(this);
+        this.menu = menuInput;
+        return this.menu;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="SetListObject">
+    public boolean setVerifications(List<Verification> verificationsInput) {
+        verificationsInput.forEach(v -> {
+            v.setStore(this);
+        });
+        this.verifications = new ArrayList<>(verificationsInput);
+        if(this.verifications == verificationsInput){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean setRevenues(List<Revenue> revenuesInput) {
+        revenuesInput.forEach(r -> {
+            r.setStore(this);
+        });
+        this.revenues = new ArrayList<>(revenuesInput);
+        if(this.revenues == revenuesInput){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean setRentalFees(List<RentalFee> rentalFeesInput) {
+        rentalFeesInput.forEach(r -> {
+            r.setStore(this);
+        });
+        this.rentalFees = new ArrayList<>(rentalFeesInput);
+        if(this.rentalFees == rentalFeesInput){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean setRatings(List<Rating>   ratingsInput) {
+        ratingsInput.forEach(r -> {
+            r.setStore(this);
+        });
+        this.ratings = new ArrayList<>(ratingsInput);
+        if(this.ratings == ratingsInput){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean setStoreImages(List<StoreImage> storeImagesInput) {
+        storeImagesInput.forEach(s -> {
+            s.setStore(this);
+        });
+        this.storeImages = new ArrayList<>(storeImagesInput);
+        if(this.storeImages == storeImagesInput){
+            return false;
+        }
+        return true;
     }
 
 
-
-
-
-
+    //</editor-fold>
 }

@@ -16,16 +16,17 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "base_services")
 public class BaseService {
-    protected BaseService(){};
+    protected BaseService() {
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "base_service_id", nullable = false)
     private Long baseServiceId;
 
-    @Column(name = "service_name")
+    @Column(nullable = false, name = "service_name")
     private String serviceName;
 
-    @Column(name = "service_price")
+    @Column(nullable = false, name = "service_price")
     private BigDecimal servicePrice;
 
     @Column(name = "service_description")
