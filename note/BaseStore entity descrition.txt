@@ -1,0 +1,10 @@
+I.Properties:
+1. Primitive type
+-Long store_id:
+-String store_name:
+
+
+
+2.Object
+
+II. Behaviors, Methods
