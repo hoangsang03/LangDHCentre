@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import java.util.Objects;
 
@@ -17,12 +19,12 @@ import java.util.Objects;
 @Table( name = "addresses")
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id", nullable = false)
+    @Column(name = "stores_id", nullable = false)
     private Long addressId;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
+    @MapsId
+    @LazyToOne(LazyToOneOption.NO_PROXY)
     private BaseStore store;
 
     @Column(name = "city")

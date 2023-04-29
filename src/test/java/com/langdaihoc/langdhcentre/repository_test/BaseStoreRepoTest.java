@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -85,13 +84,15 @@ public class BaseStoreRepoTest {
         /**
          * storeId
          * storeName
+         * Start Attributes have default value:
          * isStarted
          * isShutdown
-         * openingTime
-         * closingTime
          * isAutoOpenSetting
          * isOpening
          * isHidden
+         * End
+         * openingTime
+         * closingTime
          * createdDate
          * operationStartDate
          * operationEndDate
@@ -109,15 +110,17 @@ public class BaseStoreRepoTest {
          * utilities
          */
         String storeName = "storeName";
-        LocalDateTime openingTime = LocalDateTime.now();
-        LocalDateTime closingTime = openingTime.plusHours(5);
+//        LocalDateTime openingTime = LocalDateTime.now();
+//        LocalDateTime closingTime = openingTime.plusHours(5);
+        LocalTime openingTime = LocalTime.now();
+        LocalTime closingTime = openingTime.plusHours(5);
         LocalDate operationStartDate = LocalDate.now();
         LocalDate operationEndDate = LocalDate.now().plusMonths(3);
         String storeUrl = "storeUrl";
         FoodStore newFoodStore = FoodStore.builder()
                 .storeName(storeName)
-                .openingTime(DateTimeUtil.convertToDateViaInstant(openingTime))
-                .closingTime(DateTimeUtil.convertToDateViaInstant(closingTime))
+                .openingTime(openingTime)
+                .closingTime(closingTime)
                 .operationStartDate(DateTimeUtil.convertToDateViaInstant(operationStartDate))
                 .operationEndDate(DateTimeUtil.convertToDateViaInstant(operationEndDate))
                 .storeUrl(storeUrl)
@@ -200,14 +203,14 @@ public class BaseStoreRepoTest {
         System.out.println("StoreId: " + storeId);
         Optional<FoodStore> foodStoreRepoById = this.foodStoreRepo.findById(storeId);
         FoodStore foodStore = foodStoreRepoById.orElse(null);
-        Date openingTime1 = foodStore.getOpeningTime();
+        LocalTime openingTime1 = foodStore.getOpeningTime();
 
 
 //        DateTimeUtil.convertToLocalDateTimeViaInstant(openingTime1);
 //        Date openingTime2 = foodStore.getClosingTime();
 //        DateTimeUtil.convertToLocalDateTimeViaInstant(openingTime2);
 
-        if(foodStore != null){
+        if (foodStore != null) {
             System.out.println(foodStore);
         }
         System.out.println("end!");
@@ -216,22 +219,17 @@ public class BaseStoreRepoTest {
     }
 
 
-
     @Test
     @DisplayName("test basic syntax")
-    public void testBasicSyntax(){
+    public void testBasicSyntax() {
         long storeId = 3;
         Optional<FoodStore> foodStoreRepoById = this.foodStoreRepo.findById(storeId);
         FoodStore foodStore = foodStoreRepoById.orElse(null);
-        Date openingTime1 = foodStore.getOpeningTime();
-        Time time = (Time) openingTime1;
+        LocalTime openingTime1 = foodStore.getOpeningTime();
 
-        System.out.println(openingTime1.getClass());
-        LocalTime localTime = time.toLocalTime();
-        System.out.println(localTime);
 
         TimeZone aDefault = TimeZone.getDefault();
-        Arrays.stream(TimeZone.getAvailableIDs()).forEach(s -> System.out.println(s));
+        Arrays.stream(TimeZone.getAvailableIDs()).forEach(System.out::println);
         ZoneId zoneId = ZoneId.of("Asia/Saigon");
         zoneId.toString();
         /**
@@ -239,34 +237,29 @@ public class BaseStoreRepoTest {
          */
 
 
-
     }
 
     @Test
     public void findByStoreIdTest() {
-        long storeId = 6;
+        long storeId = 1;
         Optional<FoodStore> foodStoreOptional = this.foodStoreRepo.findByStoreId(storeId);
 
         FoodStore foodStore = foodStoreOptional.orElse(null);
-        if(foodStore != null){
-            Date openingTime = foodStore.getOpeningTime();
+        if (foodStore != null) {
+            LocalTime openingTime = foodStore.getOpeningTime();
             System.out.println("openingTime: " + openingTime.getClass());
-//            DateTimeUtil.convertToLocalDateTime(openingTime);
-//            DateTimeUtil.convertToLocalDateTimeViaMilisecond(openingTime);
-//            DateTimeUtil.convertToLocalDateViaInstant(openingTime);
-//            DateTimeUtil.convertToLocalDateTimeViaSqlTimestamp(openingTime);
 
-            Date closingTime = foodStore.getClosingTime();
+            LocalTime closingTime = foodStore.getClosingTime();
             System.out.println("closingTime: " + closingTime.getClass());
 
             Date createdDate = foodStore.getCreatedDate();
             System.out.println("createdDate: " + createdDate.getClass());
 
             Date operationStartDate = foodStore.getOperationStartDate();
-            System.out.println("operationStartDate: " + createdDate.getClass());
+            System.out.println("operationStartDate: " + operationStartDate.getClass());
 
             Date operationEndDate = foodStore.getOperationEndDate();
-            System.out.println("operationEndDate: " + createdDate.getClass());
+            System.out.println("operationEndDate: " + operationEndDate.getClass());
 
         }
     }

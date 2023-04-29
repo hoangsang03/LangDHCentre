@@ -10,10 +10,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,12 +78,12 @@ public class BaseStore {
     @Column(name = "opening_time")
     @JsonFormat(pattern = "HH:mm:ss")
     @Temporal(TemporalType.TIME)
-    private Date openingTime;
+    private LocalTime openingTime;
 
     @Column(name = "closing_time")
     @JsonFormat(pattern = "HH:mm:ss")
     @Temporal(TemporalType.TIME)
-    private Date closingTime;
+    private LocalTime closingTime;
 
     @Column(name = "is_auto_open_setting")
     @Builder.Default
@@ -123,41 +126,51 @@ public class BaseStore {
     @Column(name = "store_url")
     private String storeUrl;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id", nullable = false, referencedColumnName = "owner_id")
     private Owner owner;
 
-    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    /**
+     * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
+     */
+    @OneToOne(mappedBy = "store",optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    @LazyToOne(LazyToOneOption.NO_PROXY)
     private Address address;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "area_id", referencedColumnName = "area_id")
     private Area area;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "store")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "store")
     @Builder.Default
     private List<Verification> verifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<Revenue> revenues = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<RentalFee> rentalFees = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<Rating> ratings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<StoreImage> storeImages = new ArrayList<>();
 
-    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    /**
+     * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
+     */
+    @OneToOne(mappedBy = "store",optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @LazyToOne(LazyToOneOption.NO_PROXY)
+    @PrimaryKeyJoinColumn
     private Menu menu;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "store_category",
             joinColumns = @JoinColumn(name = "store_id"),
@@ -166,7 +179,7 @@ public class BaseStore {
     @Builder.Default
     private List<Category> categories = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "store_utility",
             joinColumns = @JoinColumn(name = "store_id"),
@@ -291,7 +304,7 @@ public class BaseStore {
             v.setStore(this);
         });
         this.verifications = new ArrayList<>(verificationsInput);
-        if(this.verifications == verificationsInput){
+        if (this.verifications == verificationsInput) {
             return false;
         }
         return true;
@@ -302,7 +315,7 @@ public class BaseStore {
             r.setStore(this);
         });
         this.revenues = new ArrayList<>(revenuesInput);
-        if(this.revenues == revenuesInput){
+        if (this.revenues == revenuesInput) {
             return false;
         }
         return true;
@@ -313,18 +326,18 @@ public class BaseStore {
             r.setStore(this);
         });
         this.rentalFees = new ArrayList<>(rentalFeesInput);
-        if(this.rentalFees == rentalFeesInput){
+        if (this.rentalFees == rentalFeesInput) {
             return false;
         }
         return true;
     }
 
-    public boolean setRatings(List<Rating>   ratingsInput) {
+    public boolean setRatings(List<Rating> ratingsInput) {
         ratingsInput.forEach(r -> {
             r.setStore(this);
         });
         this.ratings = new ArrayList<>(ratingsInput);
-        if(this.ratings == ratingsInput){
+        if (this.ratings == ratingsInput) {
             return false;
         }
         return true;
@@ -335,7 +348,7 @@ public class BaseStore {
             s.setStore(this);
         });
         this.storeImages = new ArrayList<>(storeImagesInput);
-        if(this.storeImages == storeImagesInput){
+        if (this.storeImages == storeImagesInput) {
             return false;
         }
         return true;

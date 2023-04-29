@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +23,15 @@ import java.util.Objects;
 public class Menu {
     protected Menu(){}
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "menu_id", nullable = false)
+    @Column(name = "store_id", nullable = false)
     private Long menuId;
 
     @Column(name = "menu_name")
     private String menuName;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @MapsId
+    @LazyToOne(LazyToOneOption.NO_PROXY)
     private BaseStore store;
 
     @OneToMany(mappedBy = "menu",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
