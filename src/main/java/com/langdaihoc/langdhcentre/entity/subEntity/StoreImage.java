@@ -16,7 +16,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "storeImages")
 public class StoreImage {
-    protected StoreImage() {};
+    protected StoreImage() {}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", nullable = false)

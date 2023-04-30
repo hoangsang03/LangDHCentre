@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
+import org.springframework.data.annotation.CreatedDate;
 
 
 import java.time.LocalDate;
@@ -202,25 +203,6 @@ public class BaseStore {
         return Objects.hash(storeId, storeName, isStarted, isShutdown, openingTime, closingTime, isAutoOpenSetting, isOpening, isHidden, createdDate, operationStartDate, operationEndDate);
     }
 
-    @Override
-    public String toString() {
-        return "BaseStore{" +
-                "storeId=" + storeId +
-                ", storeName='" + storeName + '\'' +
-                ", isStarted=" + isStarted +
-                ", isShutdown=" + isShutdown +
-                ", openingTime=" + openingTime +
-                ", closingTime=" + closingTime +
-                ", isAutoOpenSetting=" + isAutoOpenSetting +
-                ", isOpening=" + isOpening +
-                ", isHidden=" + isHidden +
-                ", createdDate=" + createdDate +
-                ", operationStartDate=" + operationStartDate +
-                ", operationEndDate=" + operationEndDate +
-                ", storeUrl='" + storeUrl + '\'' +
-                '}';
-    }
-
     //<editor-fold desc="addObjectIntoList">
     public boolean addVerification(Verification verificationInput) {
         verificationInput.setStore(this);
@@ -304,10 +286,7 @@ public class BaseStore {
             v.setStore(this);
         });
         this.verifications = new ArrayList<>(verificationsInput);
-        if (this.verifications == verificationsInput) {
-            return false;
-        }
-        return true;
+        return this.verifications != verificationsInput;
     }
 
     public boolean setRevenues(List<Revenue> revenuesInput) {
@@ -315,10 +294,7 @@ public class BaseStore {
             r.setStore(this);
         });
         this.revenues = new ArrayList<>(revenuesInput);
-        if (this.revenues == revenuesInput) {
-            return false;
-        }
-        return true;
+        return this.revenues != revenuesInput;
     }
 
     public boolean setRentalFees(List<RentalFee> rentalFeesInput) {
@@ -326,10 +302,7 @@ public class BaseStore {
             r.setStore(this);
         });
         this.rentalFees = new ArrayList<>(rentalFeesInput);
-        if (this.rentalFees == rentalFeesInput) {
-            return false;
-        }
-        return true;
+        return this.rentalFees != rentalFeesInput;
     }
 
     public boolean setRatings(List<Rating> ratingsInput) {
@@ -337,10 +310,7 @@ public class BaseStore {
             r.setStore(this);
         });
         this.ratings = new ArrayList<>(ratingsInput);
-        if (this.ratings == ratingsInput) {
-            return false;
-        }
-        return true;
+        return this.ratings != ratingsInput;
     }
 
     public boolean setStoreImages(List<StoreImage> storeImagesInput) {
@@ -348,12 +318,29 @@ public class BaseStore {
             s.setStore(this);
         });
         this.storeImages = new ArrayList<>(storeImagesInput);
-        if (this.storeImages == storeImagesInput) {
-            return false;
-        }
-        return true;
+        return this.storeImages != storeImagesInput;
     }
 
 
     //</editor-fold>
+
+
+    @Override
+    public String toString() {
+        return "BaseStore{" +
+                "storeId=" + storeId +
+                ", storeName='" + storeName + '\'' +
+                ", isStarted=" + isStarted +
+                ", isShutdown=" + isShutdown +
+                ", openingTime=" + openingTime +
+                ", closingTime=" + closingTime +
+                ", isAutoOpenSetting=" + isAutoOpenSetting +
+                ", isOpening=" + isOpening +
+                ", isHidden=" + isHidden +
+                ", createdDate=" + createdDate +
+                ", operationStartDate=" + operationStartDate +
+                ", operationEndDate=" + operationEndDate +
+                ", storeUrl='" + storeUrl + '\'' +
+                '}';
+    }
 }

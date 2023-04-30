@@ -18,7 +18,8 @@ import java.util.List;
 @Entity
 @Table(name = "operators")
 public class Operator {
-    protected Operator(){};
+    protected Operator(){}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "operator_id", nullable = false)

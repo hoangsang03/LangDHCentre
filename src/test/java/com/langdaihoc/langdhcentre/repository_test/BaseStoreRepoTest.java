@@ -1,9 +1,6 @@
 package com.langdaihoc.langdhcentre.repository_test;
 
-import com.langdaihoc.langdhcentre.entity.mainEntity.Customer;
-import com.langdaihoc.langdhcentre.entity.mainEntity.FoodStore;
-import com.langdaihoc.langdhcentre.entity.mainEntity.Operator;
-import com.langdaihoc.langdhcentre.entity.mainEntity.Owner;
+import com.langdaihoc.langdhcentre.entity.mainEntity.*;
 import com.langdaihoc.langdhcentre.entity.subEntity.*;
 import com.langdaihoc.langdhcentre.repository.BaseStoreRepo;
 import com.langdaihoc.langdhcentre.repository.CoffeeShopRepo;
@@ -23,10 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
-import java.util.TimeZone;
+import java.util.*;
 
 //@SpringBootTest
 @DataJpaTest
@@ -109,9 +103,7 @@ public class BaseStoreRepoTest {
          * categories
          * utilities
          */
-        String storeName = "storeName";
-//        LocalDateTime openingTime = LocalDateTime.now();
-//        LocalDateTime closingTime = openingTime.plusHours(5);
+        String storeName = "storeName2";
         LocalTime openingTime = LocalTime.now();
         LocalTime closingTime = openingTime.plusHours(5);
         LocalDate operationStartDate = LocalDate.now();
@@ -202,13 +194,11 @@ public class BaseStoreRepoTest {
         long storeId = savedFoodStore.getStoreId();
         System.out.println("StoreId: " + storeId);
         Optional<FoodStore> foodStoreRepoById = this.foodStoreRepo.findById(storeId);
-        FoodStore foodStore = foodStoreRepoById.orElse(null);
+        FoodStore foodStore = (FoodStore) foodStoreRepoById.orElse(null);
+        assert foodStore != null;
         LocalTime openingTime1 = foodStore.getOpeningTime();
 
 
-//        DateTimeUtil.convertToLocalDateTimeViaInstant(openingTime1);
-//        Date openingTime2 = foodStore.getClosingTime();
-//        DateTimeUtil.convertToLocalDateTimeViaInstant(openingTime2);
 
         if (foodStore != null) {
             System.out.println(foodStore);
@@ -224,7 +214,7 @@ public class BaseStoreRepoTest {
     public void testBasicSyntax() {
         long storeId = 3;
         Optional<FoodStore> foodStoreRepoById = this.foodStoreRepo.findById(storeId);
-        FoodStore foodStore = foodStoreRepoById.orElse(null);
+        FoodStore foodStore = (FoodStore) foodStoreRepoById.orElse(null);
         LocalTime openingTime1 = foodStore.getOpeningTime();
 
 
@@ -241,10 +231,10 @@ public class BaseStoreRepoTest {
 
     @Test
     public void findByStoreIdTest() {
-        long storeId = 1;
+        long storeId = 3;
         Optional<FoodStore> foodStoreOptional = this.foodStoreRepo.findByStoreId(storeId);
 
-        FoodStore foodStore = foodStoreOptional.orElse(null);
+        FoodStore foodStore = (FoodStore) foodStoreOptional.orElse(null);
         if (foodStore != null) {
             LocalTime openingTime = foodStore.getOpeningTime();
             System.out.println("openingTime: " + openingTime.getClass());
@@ -265,9 +255,42 @@ public class BaseStoreRepoTest {
     }
 
     @Test
-    public void convertToDateViaSqlTimestampTest() {
+    @DisplayName("find FoodStore Has Name That Contain Given String")
+    public void findFoodStoreByNameTest() {
+        String storeName = "";
+        List<FoodStore> storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
+        System.out.println("condition storeName Like " + storeName);
+        System.out.println("storeNameList.size() : " + storeNameList.size());
+        storeNameList.forEach( s -> System.out.println(s.getStoreName()));
 
-        Date date = DateTimeUtil.convertToDateViaInstant(LocalDateTime.now());
-        System.out.println("end");
+        storeName = "2";
+        List<FoodStore> storeNameList2 = this.foodStoreRepo.findFoodStoreByByName2(storeName);
+        System.out.println("condition storeName Like " + storeName);
+        System.out.println("storeNameList.size() : " + storeNameList2.size());
+        storeNameList2.forEach( s -> System.out.println(s.getStoreName()));
+
+        storeName = "storeName";
+        storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
+        System.out.println("condition storeName Like " + storeName);
+        System.out.println("storeNameList.size() : " + storeNameList.size());
+        storeNameList.forEach( s -> System.out.println(s.getStoreName()));
+
+        storeName = "storeName2";
+        storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
+        System.out.println("condition storeName Like " + storeName);
+        System.out.println("storeNameList.size() : " + storeNameList.size());
+        storeNameList.forEach( s -> System.out.println(s.getStoreName()));
     }
+
+    @Test
+    @DisplayName("getStoreById ")
+    public void getStoreByIdTest() {
+        long storeId = 1;
+        String tableName = "FoodStore";
+        BaseStore baseStore = this.baseStoreRepo.getStoreById(tableName, storeId);
+        if(baseStore != null){
+            System.out.println(baseStore);
+        }
+    }
+
 }
