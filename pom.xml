@@ -46,7 +46,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version>
+            <version>8.0.32</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
+            <version>24.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -85,7 +85,28 @@
             <artifactId>tomcat-dbcp</artifactId>
             <version>11.0.0-M5</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <!-- API, java.xml.bind module -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
 
+        <!-- Runtime, com.sun.xml.bind module -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.hypersistence</groupId>-->
+<!--            <artifactId>hypersistence-utils-hibernate-62</artifactId>-->
+<!--            <version>3.3.2</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

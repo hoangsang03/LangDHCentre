@@ -27,7 +27,7 @@ public class StoreController {
     @CrossOrigin()
     public ResponseEntity<StoreDTO> getStores() {
 
-        List<FoodStore> foodStoreByByName = this.foodStoreRepo.findFoodStoreByByName("");
+        List<FoodStore> foodStoreByByName = this.foodStoreRepo.getFoodStoreLikeName("");
         FoodStore foodStore = foodStoreByByName.get(0);
 
         StoreDTO storeDTO = new StoreDTO();

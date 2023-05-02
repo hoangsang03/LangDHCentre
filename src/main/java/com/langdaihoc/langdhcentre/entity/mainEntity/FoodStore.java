@@ -1,15 +1,36 @@
 package com.langdaihoc.langdhcentre.entity.mainEntity;
 
+import com.langdaihoc.langdhcentre.common.StoreTypeConstant;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
 @Getter
 @Setter
-@SuperBuilder
+//@ToString(callSuper = true)
 @Entity
 public class FoodStore extends BaseStore{
-    protected FoodStore(){}
+    {
+        this.setStoreType(StoreTypeConstant.FOOD_STORE);
+        //
+        this.setFoodType("food type");
+    }
+    public FoodStore(){
+
+    }
+
+    @Column(name = "food_type")
+    private String foodType;
+
+
+    @Override
+    public String toString() {
+        return "FoodStore{" +
+                "foodType='" + foodType + '\'' +
+                ", super=" + super.toString() +
+                '}';
+    }
 }

@@ -19,7 +19,7 @@ public interface FoodStoreRepo extends JpaRepository<FoodStore, Long> {
      * @return Store with given store's id or null
      */
     @Query("select s from FoodStore s where s.storeId = ?1")
-    Optional<FoodStore> findByStoreId(long storeId);
+    Optional<FoodStore> getFoodStoreByStoreId(long storeId);
 
     /**
      *
@@ -28,12 +28,12 @@ public interface FoodStoreRepo extends JpaRepository<FoodStore, Long> {
      */
 
     @Query("select s from FoodStore s where s.storeName like %:name%")
-    List<FoodStore> findFoodStoreByByName(@Param(value = "name") String storeName);
+    List<FoodStore> getFoodStoreLikeName(@Param(value = "name") String storeName);
 
     @Query("select s from FoodStore s where s.storeName like %?1%")
     List<FoodStore> findFoodStoreByByName2(String storeName);
 /**
- * 1. storeId : long		-> equals     -> Optional<FoodStore> findByStoreId(long storeId);
+ * 1. storeId : long		-> equals     -> Optional<FoodStore> getFoodStoreByStoreId(long storeId);
  * 	2. storeName : String 	-> LIKE
  * 	3
  * 		1.isStarted : boolean  -> equals

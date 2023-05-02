@@ -1,6 +1,7 @@
 package com.langdaihoc.langdhcentre.entity.mainEntity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.langdaihoc.langdhcentre.common.StoreTypeConstant;
 import com.langdaihoc.langdhcentre.entity.subEntity.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -47,6 +48,10 @@ public class BaseStore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Long storeId;
+
+    @Column(name = "store_type", nullable = false)
+    @Builder.Default
+    protected int storeType = StoreTypeConstant.BASE_STORE;
 
     @Column(name = "store_name")
     private String storeName;
@@ -134,7 +139,7 @@ public class BaseStore {
     /**
      * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
      */
-    @OneToOne(mappedBy = "store",optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @LazyToOne(LazyToOneOption.NO_PROXY)
     private Address address;
@@ -166,7 +171,7 @@ public class BaseStore {
     /**
      * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
      */
-    @OneToOne(mappedBy = "store",optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @LazyToOne(LazyToOneOption.NO_PROXY)
     @PrimaryKeyJoinColumn
     private Menu menu;

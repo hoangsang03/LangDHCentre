@@ -1,11 +1,13 @@
 package com.langdaihoc.langdhcentre.repository_test;
 
+import com.langdaihoc.langdhcentre.common.StoreTypeConstant;
 import com.langdaihoc.langdhcentre.entity.mainEntity.*;
 import com.langdaihoc.langdhcentre.entity.subEntity.*;
 import com.langdaihoc.langdhcentre.repository.BaseStoreRepo;
 import com.langdaihoc.langdhcentre.repository.CoffeeShopRepo;
 import com.langdaihoc.langdhcentre.repository.FoodStoreRepo;
 import com.langdaihoc.langdhcentre.util.DateTimeUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -28,6 +29,7 @@ import java.util.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 // use real database
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@Slf4j
 public class BaseStoreRepoTest {
     private final BaseStoreRepo baseStoreRepo;
     private final FoodStoreRepo foodStoreRepo;
@@ -45,15 +47,39 @@ public class BaseStoreRepoTest {
      *
      */
     @Test
-    @DisplayName("create new store without setting any values")
-    public void createNewStoreWithoutSettingAnyValues() {
+    @DisplayName("createNewBaseStore test")
+    public void createNewDefaultBaseStore() {
+        Owner newOwner2 = Owner.builder()
+                .ownerName("admin")
+                .build();
+        BaseStore newEmptyBaseStore = BaseStore.builder()
+                .owner(newOwner2)
+                .build();
+        BaseStore savedBaseStore = this.baseStoreRepo.save(newEmptyBaseStore);
+    }
+
+    @Test
+    @DisplayName("createNewCoffeeShop test")
+    public void createNewDefaultCoffeeShop() {
+        Owner newOwner2 = Owner.builder()
+                .ownerName("admin")
+                .build();
+        CoffeeShop coffeeShop = new CoffeeShop();
+        coffeeShop.setOwner(newOwner2);
+
+        CoffeeShop savedBaseStore = this.coffeeShopRepo.save(coffeeShop);
+    }
+
+    @Test
+    @DisplayName("createNewFoodStoreWithoutSettingAnyValues test")
+    public void createNewDefaultFoodStore() {
         Owner newOwner = Owner.builder()
                 .ownerName("admin")
                 .build();
-        FoodStore newEmptyFoodStore = FoodStore.builder()
-                .owner(newOwner)
-                .build();
+        FoodStore newEmptyFoodStore = new FoodStore();
+        newEmptyFoodStore.setOwner(newOwner);
         FoodStore savedFoodStore = this.foodStoreRepo.save(newEmptyFoodStore);
+
 
         /**
          * isStarted = false
@@ -73,8 +99,8 @@ public class BaseStoreRepoTest {
     }
 
     @Test
-    @DisplayName("create new store with all attributes")
-    public void createNewStoreWithAllAttributes() {
+    @DisplayName("createFoodStoreWithAllAttributes")
+    public void createFoodStoreWithAllAttributes() {
         /**
          * storeId
          * storeName
@@ -109,14 +135,13 @@ public class BaseStoreRepoTest {
         LocalDate operationStartDate = LocalDate.now();
         LocalDate operationEndDate = LocalDate.now().plusMonths(3);
         String storeUrl = "storeUrl";
-        FoodStore newFoodStore = FoodStore.builder()
-                .storeName(storeName)
-                .openingTime(openingTime)
-                .closingTime(closingTime)
-                .operationStartDate(DateTimeUtil.convertToDateViaInstant(operationStartDate))
-                .operationEndDate(DateTimeUtil.convertToDateViaInstant(operationEndDate))
-                .storeUrl(storeUrl)
-                .build();
+        FoodStore newFoodStore = new FoodStore();
+        newFoodStore.setStoreName(storeName);
+        newFoodStore.setOpeningTime(openingTime);
+        newFoodStore.setClosingTime(closingTime);
+        newFoodStore.setOperationStartDate(DateTimeUtil.convertToDateViaInstant(operationStartDate));
+        newFoodStore.setOperationEndDate(DateTimeUtil.convertToDateViaInstant(operationEndDate));
+        newFoodStore.setStoreUrl(storeUrl);
 
         Owner newOwner = Owner.builder().ownerName("ownerName").build();
         newFoodStore.setOwner(newOwner);
@@ -194,10 +219,8 @@ public class BaseStoreRepoTest {
         long storeId = savedFoodStore.getStoreId();
         System.out.println("StoreId: " + storeId);
         Optional<FoodStore> foodStoreRepoById = this.foodStoreRepo.findById(storeId);
-        FoodStore foodStore = (FoodStore) foodStoreRepoById.orElse(null);
+        FoodStore foodStore = foodStoreRepoById.orElse(null);
         assert foodStore != null;
-        LocalTime openingTime1 = foodStore.getOpeningTime();
-
 
 
         if (foodStore != null) {
@@ -232,9 +255,9 @@ public class BaseStoreRepoTest {
     @Test
     public void findByStoreIdTest() {
         long storeId = 3;
-        Optional<FoodStore> foodStoreOptional = this.foodStoreRepo.findByStoreId(storeId);
+        Optional<FoodStore> foodStoreOptional = this.foodStoreRepo.getFoodStoreByStoreId(storeId);
 
-        FoodStore foodStore = (FoodStore) foodStoreOptional.orElse(null);
+        FoodStore foodStore = foodStoreOptional.orElse(null);
         if (foodStore != null) {
             LocalTime openingTime = foodStore.getOpeningTime();
             System.out.println("openingTime: " + openingTime.getClass());
@@ -261,36 +284,112 @@ public class BaseStoreRepoTest {
         List<FoodStore> storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList.size());
-        storeNameList.forEach( s -> System.out.println(s.getStoreName()));
+        storeNameList.forEach(s -> System.out.println(s.getStoreName()));
 
         storeName = "2";
         List<FoodStore> storeNameList2 = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList2.size());
-        storeNameList2.forEach( s -> System.out.println(s.getStoreName()));
+        storeNameList2.forEach(s -> System.out.println(s.getStoreName()));
 
         storeName = "storeName";
         storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList.size());
-        storeNameList.forEach( s -> System.out.println(s.getStoreName()));
+        storeNameList.forEach(s -> System.out.println(s.getStoreName()));
 
         storeName = "storeName2";
         storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList.size());
-        storeNameList.forEach( s -> System.out.println(s.getStoreName()));
+        storeNameList.forEach(s -> System.out.println(s.getStoreName()));
     }
 
     @Test
-    @DisplayName("getStoreById ")
-    public void getStoreByIdTest() {
-        long storeId = 1;
-        String tableName = "FoodStore";
-        BaseStore baseStore = this.baseStoreRepo.getStoreById(tableName, storeId);
-        if(baseStore != null){
-            System.out.println(baseStore);
+    @DisplayName("getStoreWithStoreTypeAndStoreId Test")
+    public void getStoreWithStoreTypeAndStoreIdTest() {
+        log.info("getStoreWithDtypeAndStoreIdTest start");
+        String dtype = "FoodStore";
+        long storeId = 3;
+        try {
+            BaseStore foodStore = this.baseStoreRepo.getStoreWithStoreTypeAndStoreId(
+                    StoreTypeConstant.FOOD_STORE, storeId);
+            System.out.println("foodStore: " + foodStore);
+            log.debug("foodStore: " + foodStore);
+        } catch (Exception e) {
+            log.error("getStoreWithDtypeAndStoreIdTest has errors", e);
+        }
+
+        try {
+            CoffeeShop coffeeShop = (CoffeeShop) this.baseStoreRepo.getStoreWithStoreTypeAndStoreId(
+                    StoreTypeConstant.COFFEE_SHOP, storeId);
+
+            System.out.println("coffeeShop: " + coffeeShop);
+            log.debug("coffeeShop: " + coffeeShop);
+        } catch (Exception e) {
+            log.error("getStoreWithDtypeAndStoreIdTest has errors", e);
         }
     }
+
+    @Test
+    @DisplayName("getBaseStoreWithStoreId Test")
+    public void getBaseStoreWithStoreIdTest() {
+        long storeId = 3;
+        Optional<BaseStore> baseStoreOptional = this.baseStoreRepo.getBaseStoreWithStoreId(storeId);
+        BaseStore baseStore;
+        if (baseStoreOptional.isPresent()) {
+            baseStore = baseStoreOptional.get();
+            log.debug("storeType: " + baseStore.getStoreType());
+            if (baseStore instanceof FoodStore) {
+                FoodStore foodStore = (FoodStore) baseStore;
+                log.debug("baseStore is instance of FoodStore");
+                log.debug("foodStore: " + foodStore);
+            } else if (baseStore instanceof CoffeeShop) {
+                CoffeeShop coffeeShop = (CoffeeShop) baseStore;
+                log.debug("baseStore is instance of CoffeeShop");
+                log.debug("foodStore: " + coffeeShop);
+            } else {
+                log.debug("baseStore is instance of BaseStore");
+            }
+        } else {
+            log.debug("getBaseStoreWithStoreId return null with storeId : " + storeId);
+        }
+
+    }
+
+    @Test
+    @DisplayName("getBaseStoreLikeName test")
+    public void getBaseStoreLikeNameTest(){
+        String storeName = "";
+        try{
+            List<BaseStore> baseStoreLikeName = this.baseStoreRepo.getBaseStoreLikeName(storeName);
+            log.debug("baseStoreLikeName.size(): " + baseStoreLikeName.size());
+            baseStoreLikeName.forEach(s -> log.debug(s.getClass().getSimpleName()));
+        } catch (Exception e){
+            log.error("getBaseStoreLikeNameTest", e);
+        }
+    }
+
+    @Test
+    @DisplayName("getBaseStoreLikeNameUseSpecification test")
+    public void getBaseStoreLikeNameUseSpecificationTest(){
+        String storeName = "%store%";
+        long storeId = 4;
+        try{
+            List<BaseStore> baseStoreLikeName = this.baseStoreRepo.findAll(
+                    BaseStoreRepo.BaseStoreSpecification.likeName(storeName)
+                            .and(BaseStoreRepo.BaseStoreSpecification.byId(storeId)));
+            log.debug("baseStoreLikeName.size(): " + baseStoreLikeName.size());
+            baseStoreLikeName.forEach(s -> {
+                log.debug(s.getClass().getSimpleName());
+                log.debug(s.toString());
+            }
+            );
+        } catch (Exception e){
+            log.error("getBaseStoreLikeNameTest", e);
+        }
+    }
+
+
 
 }
