@@ -13,9 +13,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 @Entity
 public class OtherService extends BaseService{
-    protected OtherService() {};
-
-
+    protected OtherService() {}
 
 
 }

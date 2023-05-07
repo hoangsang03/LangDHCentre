@@ -18,7 +18,8 @@ import java.util.Objects;
 @Entity
 @Table( name = "areas")
 public class Area {
-    protected Area(){};
+    protected Area(){}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "area_id", nullable = false)

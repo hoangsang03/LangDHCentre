@@ -1,6 +1,7 @@
 package com.langdaihoc.langdhcentre.entity.mainEntity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.langdaihoc.langdhcentre.common.StoreTypeConstant;
 import com.langdaihoc.langdhcentre.entity.subEntity.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
+import org.springframework.data.annotation.CreatedDate;
 
 
 import java.time.LocalDate;
@@ -46,6 +48,10 @@ public class BaseStore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Long storeId;
+
+    @Column(name = "store_type", nullable = false)
+    @Builder.Default
+    protected int storeType = StoreTypeConstant.BASE_STORE;
 
     @Column(name = "store_name")
     private String storeName;
@@ -133,9 +139,10 @@ public class BaseStore {
     /**
      * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
      */
-    @OneToOne(mappedBy = "store",optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @LazyToOne(LazyToOneOption.NO_PROXY)
+    @NotNull
     private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -165,7 +172,7 @@ public class BaseStore {
     /**
      * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
      */
-    @OneToOne(mappedBy = "store",optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @LazyToOne(LazyToOneOption.NO_PROXY)
     @PrimaryKeyJoinColumn
     private Menu menu;
@@ -200,25 +207,6 @@ public class BaseStore {
     @Override
     public int hashCode() {
         return Objects.hash(storeId, storeName, isStarted, isShutdown, openingTime, closingTime, isAutoOpenSetting, isOpening, isHidden, createdDate, operationStartDate, operationEndDate);
-    }
-
-    @Override
-    public String toString() {
-        return "BaseStore{" +
-                "storeId=" + storeId +
-                ", storeName='" + storeName + '\'' +
-                ", isStarted=" + isStarted +
-                ", isShutdown=" + isShutdown +
-                ", openingTime=" + openingTime +
-                ", closingTime=" + closingTime +
-                ", isAutoOpenSetting=" + isAutoOpenSetting +
-                ", isOpening=" + isOpening +
-                ", isHidden=" + isHidden +
-                ", createdDate=" + createdDate +
-                ", operationStartDate=" + operationStartDate +
-                ", operationEndDate=" + operationEndDate +
-                ", storeUrl='" + storeUrl + '\'' +
-                '}';
     }
 
     //<editor-fold desc="addObjectIntoList">
@@ -304,10 +292,7 @@ public class BaseStore {
             v.setStore(this);
         });
         this.verifications = new ArrayList<>(verificationsInput);
-        if (this.verifications == verificationsInput) {
-            return false;
-        }
-        return true;
+        return this.verifications != verificationsInput;
     }
 
     public boolean setRevenues(List<Revenue> revenuesInput) {
@@ -315,10 +300,7 @@ public class BaseStore {
             r.setStore(this);
         });
         this.revenues = new ArrayList<>(revenuesInput);
-        if (this.revenues == revenuesInput) {
-            return false;
-        }
-        return true;
+        return this.revenues != revenuesInput;
     }
 
     public boolean setRentalFees(List<RentalFee> rentalFeesInput) {
@@ -326,10 +308,7 @@ public class BaseStore {
             r.setStore(this);
         });
         this.rentalFees = new ArrayList<>(rentalFeesInput);
-        if (this.rentalFees == rentalFeesInput) {
-            return false;
-        }
-        return true;
+        return this.rentalFees != rentalFeesInput;
     }
 
     public boolean setRatings(List<Rating> ratingsInput) {
@@ -337,10 +316,7 @@ public class BaseStore {
             r.setStore(this);
         });
         this.ratings = new ArrayList<>(ratingsInput);
-        if (this.ratings == ratingsInput) {
-            return false;
-        }
-        return true;
+        return this.ratings != ratingsInput;
     }
 
     public boolean setStoreImages(List<StoreImage> storeImagesInput) {
@@ -348,12 +324,29 @@ public class BaseStore {
             s.setStore(this);
         });
         this.storeImages = new ArrayList<>(storeImagesInput);
-        if (this.storeImages == storeImagesInput) {
-            return false;
-        }
-        return true;
+        return this.storeImages != storeImagesInput;
     }
 
 
     //</editor-fold>
+
+
+    @Override
+    public String toString() {
+        return "BaseStore{" +
+                "storeId=" + storeId +
+                ", storeName='" + storeName + '\'' +
+                ", isStarted=" + isStarted +
+                ", isShutdown=" + isShutdown +
+                ", openingTime=" + openingTime +
+                ", closingTime=" + closingTime +
+                ", isAutoOpenSetting=" + isAutoOpenSetting +
+                ", isOpening=" + isOpening +
+                ", isHidden=" + isHidden +
+                ", createdDate=" + createdDate +
+                ", operationStartDate=" + operationStartDate +
+                ", operationEndDate=" + operationEndDate +
+                ", storeUrl='" + storeUrl + '\'' +
+                '}';
+    }
 }

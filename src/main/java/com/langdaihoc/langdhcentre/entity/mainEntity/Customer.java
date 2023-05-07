@@ -10,7 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "customers")
 public class Customer {
-    protected Customer(){};
+    protected Customer(){}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false)
