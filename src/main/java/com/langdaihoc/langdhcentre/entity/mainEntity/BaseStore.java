@@ -142,6 +142,7 @@ public class BaseStore {
     @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @LazyToOne(LazyToOneOption.NO_PROXY)
+    @NotNull
     private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

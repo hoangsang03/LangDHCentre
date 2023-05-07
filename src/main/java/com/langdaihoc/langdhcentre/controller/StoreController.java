@@ -1,44 +1,44 @@
 package com.langdaihoc.langdhcentre.controller;
 
-import com.langdaihoc.langdhcentre.dto.StoreDTO;
-import com.langdaihoc.langdhcentre.entity.mainEntity.FoodStore;
-import com.langdaihoc.langdhcentre.repository.FoodStoreRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.langdaihoc.langdhcentre.common.ApiRequest;
+import com.langdaihoc.langdhcentre.common.ApiRespond;
+import com.langdaihoc.langdhcentre.dto.BaseStoreDTO;
+import com.langdaihoc.langdhcentre.service.IBaseStoreService;
+import com.langdaihoc.langdhcentre.util.ObjectMapperUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/stores")
+@RequiredArgsConstructor
+@Slf4j
 public class StoreController {
+    private static final String CLASS_NAME = "StoreController";
+    private final IBaseStoreService baseStoreService;
+    private final ObjectMapperUtils objectMapperConverter;
 
-    private final FoodStoreRepo foodStoreRepo;
-
-    @Autowired
-    public StoreController(FoodStoreRepo foodStoreRepo) {
-        this.foodStoreRepo = foodStoreRepo;
-    }
-    @GetMapping("/stores")
+    @GetMapping("")
     @CrossOrigin()
-    public ResponseEntity<StoreDTO> getStores() {
+    public ResponseEntity<ApiRespond> getBaseStores(
+            @RequestBody String jsonRequest
+    ) {
+        ApiRequest apiRequest = this.baseStoreService.getApiRequest(jsonRequest);
+        log.debug("apiRequest : " + apiRequest);
+        String tokenReq = apiRequest.getToken();
 
-        List<FoodStore> foodStoreByByName = this.foodStoreRepo.getFoodStoreLikeName("");
-        FoodStore foodStore = foodStoreByByName.get(0);
+        ApiRespond<List<BaseStoreDTO>> apiRespond = new ApiRespond<>();
+        List<BaseStoreDTO> stores = this.baseStoreService.getAllBaseStores();
+        log.debug(CLASS_NAME + " getBaseStores - stores.size(): " + stores.size());
+        apiRespond.setRespond(stores);
+        apiRespond.getToken().setToken(tokenReq);
+        log.debug(CLASS_NAME + " getBaseStores : ApiRespond " + apiRespond);
 
-        StoreDTO storeDTO = new StoreDTO();
-        StoreDTO.builder()
-                .isStarted(foodStore.isStarted())
-                .isShutdown(foodStore.isShutdown())
-                .isOpening(foodStore.isOpening())
-                .isHidden(foodStore.isHidden())
-                .isAutoOpenSetting(foodStore.isAutoOpenSetting())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(storeDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(apiRespond);
     }
 }

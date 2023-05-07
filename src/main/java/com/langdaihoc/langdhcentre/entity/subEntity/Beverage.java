@@ -13,7 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString(callSuper = true)
 @Entity
-@Table
 public class Beverage extends BaseService {
     protected Beverage() {
     }

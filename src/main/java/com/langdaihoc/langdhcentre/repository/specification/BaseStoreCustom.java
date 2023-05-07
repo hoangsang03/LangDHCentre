@@ -2,33 +2,38 @@ package com.langdaihoc.langdhcentre.repository.specification;
 
 import com.langdaihoc.langdhcentre.entity.mainEntity.BaseStore;
 import com.langdaihoc.langdhcentre.entity.mainEntity.BaseStore_;
+import com.langdaihoc.langdhcentre.repository.BaseStoreRepo;
 import com.langdaihoc.langdhcentre.repository.common.Filter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
 @RequiredArgsConstructor
 @Component
-public class BaseStoreSpecification {
-    private static final Double PREMIUM_PRICE = 1000D;
+@Slf4j
+public class BaseStoreCustom {
+    private final BaseStoreRepo baseStoreRepo;
 
 
-
-//        public List<BaseStore> getQueryResult(List<Filter> filters){
-//            if(filters.size()>0) {
-//                return BaseStoreRepository.findAll(getSpecificationFromFilters(filters));
-//            }else {
-//                return BaseStoreRepository.findAll();
-//            }
-//        }
+        public List<BaseStore> getQueryResult(List<Filter> filters){
+            if(filters.size()>0) {
+                return baseStoreRepo.findAll(getSpecificationFromFilters(filters));
+            }else {
+                log.info("BaseStoreCustom - getQueryResult - filters.size = 0");
+                return Collections.emptyList();
+            }
+        }
 
         private Specification<BaseStore> getSpecificationFromFilters(List<Filter> filter) {
             Specification<BaseStore> specification = where(createSpecification(filter.remove(0)));
+
             for (Filter input : filter) {
                 specification = specification.and(createSpecification(input));
             }
@@ -88,24 +93,4 @@ public class BaseStoreSpecification {
             return lists;
         }
 
-        private Specification<BaseStore> nameLike(String name){
-            return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(BaseStore_.storeName), "%"+name+"%");
-        }
-
-
-//        private Specification<BaseStore> pricesAreBetween(Double min, Double max){
-//            return (root, query, criteriaBuilder)-> criteriaBuilder.between(root.get(BaseStore_.PRICE), min, max);
-//        }
-
-//        private Specification<BaseStore> belongsToCategory(List<Category> categories){
-//            return (root, query, criteriaBuilder)-> criteriaBuilder.in(root.get(BaseStore_.CATEGORY)).value(categories);
-//        }
-//
-//        private Specification<BaseStore> isPremium() {
-//            return (root, query, criteriaBuilder) ->
-//                    criteriaBuilder.and(
-//                            criteriaBuilder.equal(root.get(BaseStore_.MANUFACTURING_PLACE).get(Address_.STATE),
-//                                    STATE.CALIFORNIA),
-//                            criteriaBuilder.greaterThanOrEqualTo(root.get(BaseStore_.PRICE), PREMIUM_PRICE));
-//        }
 }

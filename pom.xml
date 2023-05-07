@@ -102,11 +102,19 @@
             <artifactId>jaxb-runtime</artifactId>
             <version>4.0.2</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>io.hypersistence</groupId>-->
-<!--            <artifactId>hypersistence-utils-hibernate-62</artifactId>-->
-<!--            <version>3.3.2</version>-->
-<!--        </dependency>-->
+        <!--        use for BaseJPARepository-->
+        <dependency>
+            <groupId>io.hypersistence</groupId>
+            <artifactId>hypersistence-utils-hibernate-62</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

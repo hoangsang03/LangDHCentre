@@ -6,16 +6,22 @@ import com.langdaihoc.langdhcentre.entity.subEntity.*;
 import com.langdaihoc.langdhcentre.repository.BaseStoreRepo;
 import com.langdaihoc.langdhcentre.repository.CoffeeShopRepo;
 import com.langdaihoc.langdhcentre.repository.FoodStoreRepo;
+import com.langdaihoc.langdhcentre.repository.common.Filter;
+import com.langdaihoc.langdhcentre.repository.common.QueryOperator;
 import com.langdaihoc.langdhcentre.util.DateTimeUtil;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.AssertionFailure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import com.langdaihoc.langdhcentre.repository.BaseStoreRepo.BaseStoreSpecification;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,6 +37,7 @@ import java.util.*;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @Slf4j
 public class BaseStoreRepoTest {
+    private static final String CLASS_NAME = "BaseStoreRepoTest";
     private final BaseStoreRepo baseStoreRepo;
     private final FoodStoreRepo foodStoreRepo;
     private final CoffeeShopRepo coffeeShopRepo;
@@ -359,37 +366,112 @@ public class BaseStoreRepoTest {
 
     @Test
     @DisplayName("getBaseStoreLikeName test")
-    public void getBaseStoreLikeNameTest(){
+    public void getBaseStoreLikeNameTest() {
         String storeName = "";
-        try{
+        try {
             List<BaseStore> baseStoreLikeName = this.baseStoreRepo.getBaseStoreLikeName(storeName);
             log.debug("baseStoreLikeName.size(): " + baseStoreLikeName.size());
             baseStoreLikeName.forEach(s -> log.debug(s.getClass().getSimpleName()));
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("getBaseStoreLikeNameTest", e);
         }
     }
 
     @Test
-    @DisplayName("getBaseStoreLikeNameUseSpecification test")
-    public void getBaseStoreLikeNameUseSpecificationTest(){
+    @DisplayName("BaseStoreCustom: likeName & byId & wasStarted test")
+    public void specLikeNameByIdWasStartedTest() {
         String storeName = "%store%";
         long storeId = 4;
-        try{
+        boolean isStarted = false;
+        try {
             List<BaseStore> baseStoreLikeName = this.baseStoreRepo.findAll(
                     BaseStoreRepo.BaseStoreSpecification.likeName(storeName)
-                            .and(BaseStoreRepo.BaseStoreSpecification.byId(storeId)));
+                            .and(BaseStoreRepo.BaseStoreSpecification.byId(storeId))
+                            .and(BaseStoreRepo.BaseStoreSpecification.wasStarted(isStarted)));
             log.debug("baseStoreLikeName.size(): " + baseStoreLikeName.size());
             baseStoreLikeName.forEach(s -> {
-                log.debug(s.getClass().getSimpleName());
-                log.debug(s.toString());
-            }
+                        log.debug(s.getClass().getSimpleName());
+                        log.debug(s.toString());
+                    }
             );
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("getBaseStoreLikeNameTest", e);
         }
     }
 
+    @Test
+    @DisplayName("BaseStoreCustom: areOpeningAccordingToOpeningAndClosingTime test")
+    public void specAreOpeningAccordingToOpeningAndClosingTimeTest() {
+        try {
+            List<BaseStore> baseStoreLikeName = this.baseStoreRepo.findAll(
+                    BaseStoreRepo.BaseStoreSpecification.areOpeningAccordingToOpeningAndClosingTime()
+            );
+            log.debug("baseStoreLikeName.size(): " + baseStoreLikeName.size());
+            baseStoreLikeName.forEach(s -> {
+                        log.debug(s.getClass().getSimpleName());
+                        log.debug("store_id: " + s.getStoreId());
+                        log.debug("opening_time: " + s.getOpeningTime());
+                        log.debug("closing_time: " + s.getClosingTime());
+                    }
+            );
+        } catch (Exception e) {
+            log.error("specAreOpeningAccordingToOpeningAndClosingTimeTest has error", e);
+        }
+
+    }
+
+    @Test
+    @DisplayName("storesThatWasCreatedFromDateToDate test")
+    public void storesThatWasCreatedFromDateToDateTest() {
+        Date fromDate = new Date();
+        Date toDate = new Date();
+        BaseStoreSpecification.storesThatWasCreatedFromDateToDate(fromDate,toDate);
+    }
+    @Test
+    @DisplayName("createSpecificationWithFilter test")
+    public void createSpecificationWithFilterTest() {
+        List<Filter> filters = new ArrayList<>();
+        Filter hasOpened = Filter.builder()
+                .field("openingTime")
+                .operator(QueryOperator.LESS_THAN)
+                .value(String.valueOf(LocalTime.now()))
+                .build();
+        filters.add(hasOpened);
+
+        Filter hasNotClosed = Filter.builder()
+                .field("closingTime")
+                .operator(QueryOperator.GREATER_THAN)
+                .value(String.valueOf(LocalTime.now()))
+                .build();
+        filters.add(hasNotClosed);
+        filters.forEach( f -> {
+            log.debug("s " + f.toString());
+        });
+        try {
+            Specification<BaseStore> specificationFromFilters = BaseStoreSpecification.getSpecificationFromFilters(filters);
+            List<BaseStore> storeList = this.baseStoreRepo.findAll(specificationFromFilters);
+            log.debug("storeList.size(): " + storeList.size());
+            storeList.forEach(s -> {
+                        log.debug(s.getClass().getSimpleName());
+                        log.debug("store_id: " + s.getStoreId());
+                        log.debug("opening_time: " + s.getOpeningTime());
+                        log.debug("closing_time: " + s.getClosingTime());
+                    }
+            );
+        } catch (Exception ex){
+            log.error("BaseStoreTest createSpecificationWithFilterTest", ex);
+        }
+
+    }
+
+    @Test
+    public void getAllBaseStoreWithLimitAndOffset(){
+        try{
+            Specification<BaseStore> spec = null;
+        } catch (Exception ex){
+            Assertions.fail("getAllBaseStoreWithLimitAndOffset : Unexpected exception has raised!");
+        }
+    }
 
 
 }
