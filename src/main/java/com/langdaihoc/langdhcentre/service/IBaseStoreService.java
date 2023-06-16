@@ -1,6 +1,6 @@
 package com.langdaihoc.langdhcentre.service;
 
-import com.langdaihoc.langdhcentre.controller.form.GetBaseStoreRequest;
+import com.langdaihoc.langdhcentre.controller.form.SearchBaseStoreRequest;
 import com.langdaihoc.langdhcentre.controller.responseentity.BaseStoreResponse;
 import com.langdaihoc.langdhcentre.dto.BaseStoreDTO;
 import com.langdaihoc.langdhcentre.repository.common.Filter;
@@ -12,18 +12,18 @@ import java.util.List;
 public interface IBaseStoreService {
     List<BaseStoreDTO> getAllBaseStores();
 
-    <T> T getApiRequest(String jsonRequest) throws Exception;
+    <T> T getSearchBaseStoreRequest(String jsonRequest) throws Exception;
 
-    BaseStoreResponse getApiResponse(String jsonRequest);
+    BaseStoreResponse getApiResponseForSearching(String jsonRequest);
 
     String getResponseJson(BaseStoreResponse baseStoreResponse);
 
-    List<BaseStoreDTO> getBaseStoreDTOList(GetBaseStoreRequest apiRequest);
+    List<BaseStoreDTO> getBaseStoreDTOList(SearchBaseStoreRequest apiRequest);
 
-    BaseStoreResponse getApiResponse(List<BaseStoreDTO> baseStoreDTOList);
+    BaseStoreResponse getApiResponseForSearching(List<BaseStoreDTO> baseStoreDTOList);
 
-    List<Filter> getFiltersForBaseStoreInput(GetBaseStoreRequest.Input apiRequest);
-    boolean validateRequest(GetBaseStoreRequest apiRequest);
+    List<Filter> getFiltersForBaseStoreInput(SearchBaseStoreRequest.Input apiRequest);
+    boolean validateRequest(SearchBaseStoreRequest apiRequest);
 
-    BaseStoreResponse getDataOutput(GetBaseStoreRequest apiRequest);
+    BaseStoreResponse getDataOutput(SearchBaseStoreRequest apiRequest);
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 public class FieldAndQueryOperatorConstants {
 
     public final static String BASE_STORE_FIELD_STORE_ID = "storeId";
-    public final static QueryOperator BASE_STORE_QUERY_OPERATOR_STORE_ID = QueryOperator.LIKE;
+    public final static QueryOperator BASE_STORE_QUERY_OPERATOR_STORE_ID = QueryOperator.EQUALS;
 
     public final static String BASE_STORE_FIELD_STORE_NAME = "storeName";
     public final static QueryOperator BASE_STORE_QUERY_OPERATOR_STORE_NAME = QueryOperator.LIKE;
@@ -58,8 +58,12 @@ public class FieldAndQueryOperatorConstants {
      * QueryOperator : EQUALS
      */
     public Long ownerId;
+    public final static String BASE_STORE_FIELD_OWNER_ID = "isHidden";
+    public final static QueryOperator BASE_STORE_QUERY_OPERATOR_OWNER_ID_EQUALS = QueryOperator.EQUALS;
     /**
      * QueryOperator : EQUALS
      */
     public Long areaId;
+    public final static String BASE_STORE_FIELD_AREA_ID = "isHidden";
+    public final static QueryOperator BASE_STORE_QUERY_OPERATOR_AREA_ID_EQUALS = QueryOperator.EQUALS;
 }

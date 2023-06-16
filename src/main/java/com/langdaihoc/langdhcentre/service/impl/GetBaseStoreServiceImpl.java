@@ -1,16 +1,19 @@
 package com.langdaihoc.langdhcentre.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.langdaihoc.langdhcentre.common.ApiRequest;
 import com.langdaihoc.langdhcentre.common.ApiResponse;
+import com.langdaihoc.langdhcentre.controller.form.GetBaseStoreRequest;
 import com.langdaihoc.langdhcentre.controller.form.SearchBaseStoreRequest;
 import com.langdaihoc.langdhcentre.controller.responseentity.BaseStoreResponse;
 import com.langdaihoc.langdhcentre.dto.BaseStoreDTO;
 import com.langdaihoc.langdhcentre.entity.mainEntity.BaseStore;
 import com.langdaihoc.langdhcentre.exception.JsonConvertException;
 import com.langdaihoc.langdhcentre.repository.BaseStoreRepo;
-import com.langdaihoc.langdhcentre.repository.common.FieldAndQueryOperatorConstants;
 import com.langdaihoc.langdhcentre.repository.common.Filter;
 import com.langdaihoc.langdhcentre.repository.common.QueryOperator;
-import com.langdaihoc.langdhcentre.service.IBaseStoreService;
+import com.langdaihoc.langdhcentre.service.IGetBaseStoreService;
+import com.langdaihoc.langdhcentre.service.common.ServiceUtils;
 import com.langdaihoc.langdhcentre.util.ModelMapperUtils;
 import com.langdaihoc.langdhcentre.util.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +28,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BaseStoreServiceImpl implements IBaseStoreService {
-    private static final String CLASS_NAME = "com.langdaihoc.langdhcentre.service.impl.BaseStoreServiceImpl";
+public class GetBaseStoreServiceImpl implements IGetBaseStoreService {
+    private static final String CLASS_NAME = "com.langdaihoc.langdhcentre.service.impl.GetBaseStoreServiceImpl";
     private final BaseStoreRepo baseStoreRepo;
     private final ObjectMapperUtils objectMapperUtils;
 
@@ -35,12 +38,17 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
      * @return : BaseStoreResponse, must not return null
      */
     @Override
-    public BaseStoreResponse getApiResponseForSearching(String jsonRequest) {
+    public ApiResponse getApiResponse(String jsonRequest) {
         //1. Get ApiRequest
-        SearchBaseStoreRequest apiRequest = this.getSearchBaseStoreRequest(jsonRequest);
+        GetBaseStoreRequest apiRequest = null;
+        try {
+            apiRequest = (GetBaseStoreRequest) this.getApiRequest(jsonRequest, GetBaseStoreRequest.class);
+        } catch (Exception e){
+            log.error(CLASS_NAME + " - getApiResponse " , e);
+        }
 
         //2. Get data and put them into ApiResponse
-        BaseStoreResponse response = this.getDataOutput(apiRequest);
+        ApiResponse response = this.getDataOutput(apiRequest);
         return response;
     }
 
@@ -48,7 +56,7 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
      * @param apiRequest
      * @return true if apiRequest != null && apiRequest.getInput() != null , otherwise return false
      */
-    public boolean validateRequest(SearchBaseStoreRequest apiRequest) {
+    public boolean validateRequest(ApiRequest apiRequest) {
         if (apiRequest != null && apiRequest.getInput() != null) {
             return true;
         }
@@ -61,10 +69,10 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
      * @return : ApiResponse with got output and error if any
      */
     @Override
-    public BaseStoreResponse getDataOutput(SearchBaseStoreRequest apiRequest) {
-        boolean isValidRequest = validateRequest(apiRequest);
+    public ApiResponse getDataOutput(GetBaseStoreRequest apiRequest) {
+        boolean isValidRequest = ServiceUtils.validateRequest(apiRequest);
         if (!isValidRequest) {
-            return (BaseStoreResponse) responseWithInvalidRequest();
+            return responseWithInvalidRequest();
         }
         log.debug(CLASS_NAME + " - Starting getBaseStoreDTOList from valid SearchBaseStoreRequest");
         // from here if there is any errors, responsibility belong to backend
@@ -124,7 +132,7 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
 
 
     @Override
-    public String getResponseJson(BaseStoreResponse baseStoreResponse) {
+    public String getResponseJson(ApiResponse baseStoreResponse) {
         try {
             return objectMapperUtils.toJsonStringFromObject(baseStoreResponse);
         } catch (JsonConvertException e) {
@@ -134,11 +142,29 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
     }
 
     /**
+     * @param apiRequest
+     * @return
+     */
+    @Override
+    public List<BaseStoreDTO> getBaseStoreDTOList(SearchBaseStoreRequest apiRequest) {
+        return null;
+    }
+
+    /**
+     * @param baseStoreReq
+     * @return
+     */
+    @Override
+    public List<BaseStoreDTO> getBaseStoreDTOList(ApiRequest baseStoreReq) {
+        return null;
+    }
+
+    /**
      * @param baseStoreReq
      * @return not limited baseStoreDTOList or empty list
      */
     @Override
-    public List<BaseStoreDTO> getBaseStoreDTOList(SearchBaseStoreRequest baseStoreReq) {
+    public List<BaseStoreDTO> getBaseStoreDTOList(GetBaseStoreRequest baseStoreReq) {
         try {
             // not done
             List<Filter> filters = this.getFiltersForBaseStoreInput(baseStoreReq.getInput());
@@ -161,95 +187,46 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
     }
 
     @Override
-    public BaseStoreResponse getApiResponseForSearching(List<BaseStoreDTO> baseStoreDTOList) {
+    public BaseStoreResponse getApiResponse(List<BaseStoreDTO> baseStoreDTOList) {
         return null;
     }
+
+    /**
+     * @param apiRequest
+     * @return
+     */
+    @Override
+    public List<Filter> getFiltersForBaseStoreInput(SearchBaseStoreRequest.Input apiRequest) {
+        return null;
+    }
+
+    /**
+     * @param apiRequest
+     * @return
+     */
+    @Override
+    public boolean validateRequest(SearchBaseStoreRequest apiRequest) {
+        return false;
+    }
+
+    /**
+     * @param apiRequest
+     * @return
+     */
+    @Override
+    public BaseStoreResponse getDataOutput(SearchBaseStoreRequest apiRequest) {
+        return null;
+    }
+
+
 
     /**
      * @param baseStoreReq
      * @return : Filter list with given input of ApiRequest
      */
     @Override
-    public List<Filter> getFiltersForBaseStoreInput(SearchBaseStoreRequest.Input baseStoreReq) {
+    public List<Filter> getFiltersForBaseStoreInput(GetBaseStoreRequest.Input baseStoreReq) {
         List<Filter> filterList = new ArrayList<>();
-
-        // storeId
-        if (baseStoreReq.getStoreId() != null) {
-            Filter equalsStoreId = getFilterForBaseStoreInput(FieldAndQueryOperatorConstants.BASE_STORE_FIELD_STORE_ID,
-                    QueryOperator.EQUALS, baseStoreReq.getStoreId());
-            filterList.add(equalsStoreId);
-        }
-
-        // storeName - like
-        if (baseStoreReq.getStoreName() != null) {
-            Filter likeStoreName = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_STORE_NAME,
-                    QueryOperator.LIKE, baseStoreReq.getStoreName());
-            filterList.add(likeStoreName);
-        }
-
-        // storeType
-        if (baseStoreReq.getStoreType() != null) {
-            Filter equalsStoreType = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_STORE_TYPE,
-                    QueryOperator.EQUALS, baseStoreReq.getStoreType());
-            filterList.add(equalsStoreType);
-        }
-
-        // isStarted
-        if (baseStoreReq.getIsStarted() != null) {
-            Filter equalsIsStarted = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_IS_STARTED,
-                    QueryOperator.EQUALS, baseStoreReq.getIsStarted());
-            filterList.add(equalsIsStarted);
-        }
-
-        // isShutdown
-        if (baseStoreReq.getIsShutdown() != null) {
-            Filter equalsIsShutdown = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_IS_SHUTDOWN,
-                    QueryOperator.EQUALS, baseStoreReq.getIsShutdown());
-            filterList.add(equalsIsShutdown);
-        }
-
-        // isAutoOpenSetting
-        if (baseStoreReq.getIsAutoOpenSetting() != null) {
-            Filter equalsIsAutoOpenSetting = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_IS_AUTO_OPEN_SETTING,
-                    QueryOperator.EQUALS, baseStoreReq.getIsAutoOpenSetting());
-            filterList.add(equalsIsAutoOpenSetting);
-        }
-
-        // isOpening
-        if (baseStoreReq.getIsOpening() != null) {
-            Filter equalsIsOpening = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_IS_OPENING,
-                    QueryOperator.EQUALS, baseStoreReq.getIsOpening());
-            filterList.add(equalsIsOpening);
-        }
-
-        // isHidden
-        if (baseStoreReq.getIsHidden() != null) {
-            Filter equalsIsHidden = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_IS_HIDDEN,
-                    QueryOperator.EQUALS, baseStoreReq.getIsHidden());
-            filterList.add(equalsIsHidden);
-        }
-        // openingTime
-        // closingTime
-        // createdDate
-        // operationStartDate
-        // operationEndDate
-        // ownerId
-        if (baseStoreReq.getOwnerId() != null) {
-            Filter equalsOwnerId = getFilterForBaseStoreInput(
-                    FieldAndQueryOperatorConstants.BASE_STORE_FIELD_OWNER_ID,
-                    QueryOperator.EQUALS, baseStoreReq.getOwnerId());
-            filterList.add(equalsOwnerId);
-        }
-        // areaId
-        // categories
-        // utilities
 
         if (filterList.size() == 0) {
             log.warn(CLASS_NAME + " getFiltersForBaseStoreInput - " + " filters : null");
@@ -300,13 +277,13 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
 
     /**
      * @param jsonRequest
-     * @return : converted SearchBaseStoreRequest with given jsonRequest or null
+     * @return : converted GetBaseStoreRequest with given jsonRequest or null
      */
     @Override
-    public SearchBaseStoreRequest getSearchBaseStoreRequest(String jsonRequest) {
+    public ApiRequest getApiRequest(String jsonRequest, Class targetClass) {
         try {
             log.debug(CLASS_NAME + " - jsonRequest: " + jsonRequest);
-            SearchBaseStoreRequest apiRequest = objectMapperUtils.convertJsonStringToObject(jsonRequest, SearchBaseStoreRequest.class);
+            ApiRequest apiRequest = (ApiRequest) objectMapperUtils.convertJsonStringToObject(jsonRequest, targetClass);
             return apiRequest;
         } catch (JsonConvertException e) {
             log.error(CLASS_NAME + " - getApiRequest : ", e);
