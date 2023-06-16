@@ -6,6 +6,7 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.langdaihoc.langdhcentre.exception.JsonConvertException;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,19 +27,22 @@ public class ObjectMapperUtils {
     static {
         objectMapper = new ObjectMapper();
     }
+    {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.setTimeZone(TimeZone.getDefault());
+    }
 
-    public <T> T toObjectFromMap(Object o, Class<T> type) throws Exception {
+    public <T> T toObjectFromMap(Object o, Class<T> type) throws JsonConvertException {
         try {
             objectMapper.setTimeZone(TimeZone.getDefault());
             return objectMapper.convertValue(o, type);
         } catch (Exception ex) {
-            log.error("Error ObjectMapperUtils", ex);
-            throw new Exception("Error ObjectMapperUtils ", ex);
+            throw new JsonConvertException("Cannot convert from Object to " + type.getSimpleName());
         }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> List<T> convertListMapToListObject(Object object, Class<T> targetClass) throws Exception {
+    public <T> List<T> convertListMapToListObject(Object object, Class<T> targetClass) throws JsonConvertException {
         try {
             if (object == null) {
                 log.error("====Loading====: List<T> is null : " + targetClass);
@@ -46,29 +50,52 @@ public class ObjectMapperUtils {
             }
 
             if (!(object instanceof List)) {
-                throw new Exception("ApiResultリストへの変換失敗");
+                throw new JsonConvertException("Cannot convert list of map to list of object");
             }
 
             List<Object> objectList = (List) object;
-            ObjectMapper om = new ObjectMapper();
-            om.registerModule(new JavaTimeModule());
-            om.setTimeZone(TimeZone.getDefault());
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.setTimeZone(TimeZone.getDefault());
             return objectList.stream().map((o) -> {
-                return om.convertValue(o, targetClass);
+                return objectMapper.convertValue(o, targetClass);
             }).collect(Collectors.toList());
         } catch (Exception ex) {
-            log.error("Error convertMapToObject", ex);
-            throw new Exception("Mapからオブジェクトに変換エラー", ex);
+            throw new JsonConvertException("Cannot convert list of map to list of object");
         }
 
     }
 
-    public <T> T convertJsonStringToObject(String json, Class<T> targetClass) throws Exception {
+    /**
+     *
+     * @param json : json string
+     * @param targetClass : targetClass type
+     * @return object with targetClass type
+     * @param <T>
+     * @throws JsonConvertException
+     */
+    public <T> T convertJsonStringToObject(String json, Class<T> targetClass) throws JsonConvertException {
         try {
-            return objectMapper.readValue(json, targetClass);
+            log.debug(CLASS_NAME + " - json:\n " + json);
+            return (T)objectMapper.readValue(json, targetClass);
         } catch (JsonProcessingException ex) {
-            log.error(CLASS_NAME + " - convertJsonStringToObject : JsonProcessingException ", ex);
-            throw new Exception("JsonProcessingException ", ex);
+            throw new JsonConvertException("Cannot convert json string to " + targetClass.getSimpleName(), ex);
+        } catch (Exception ex) {
+            throw new JsonConvertException("Cannot convert json string to " + targetClass.getSimpleName(), ex);
+        }
+    }
+
+    /**
+     *
+     * @param object : object will be converted to json
+     * @return : json string
+     * @throws JsonConvertException
+     */
+    public String toJsonStringFromObject(Object object) throws JsonConvertException {
+        try {
+            String jsonStr = objectMapper.writeValueAsString(object);
+            return jsonStr;
+        } catch (Exception ex) {
+            throw new JsonConvertException("Cannot convert object " + object.getClass() + " to string");
         }
     }
 
