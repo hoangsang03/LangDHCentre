@@ -1,11 +1,10 @@
 package com.langdaihoc.langdhcentre.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.langdaihoc.langdhcentre.common.ApiRequest;
 import com.langdaihoc.langdhcentre.common.ApiResponse;
 import com.langdaihoc.langdhcentre.controller.form.GetBaseStoreRequest;
 import com.langdaihoc.langdhcentre.controller.form.SearchBaseStoreRequest;
-import com.langdaihoc.langdhcentre.controller.responseentity.BaseStoreResponse;
+import com.langdaihoc.langdhcentre.controller.responses.BaseStoreResponse;
 import com.langdaihoc.langdhcentre.dto.BaseStoreDTO;
 import com.langdaihoc.langdhcentre.entity.mainEntity.BaseStore;
 import com.langdaihoc.langdhcentre.exception.JsonConvertException;
@@ -125,7 +124,7 @@ public class GetBaseStoreServiceImpl implements IGetBaseStoreService {
 
         errorItem.setCode(codeErr);
         errorItem.setAct(act);
-        errorItem.setMsgParams(msgParams);
+        errorItem.setMessage(msgParams);
         response.addErrorItem(errorItem);
         return response;
     }

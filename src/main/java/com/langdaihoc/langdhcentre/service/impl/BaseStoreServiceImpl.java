@@ -2,7 +2,7 @@ package com.langdaihoc.langdhcentre.service.impl;
 
 import com.langdaihoc.langdhcentre.common.ApiResponse;
 import com.langdaihoc.langdhcentre.controller.form.SearchBaseStoreRequest;
-import com.langdaihoc.langdhcentre.controller.responseentity.BaseStoreResponse;
+import com.langdaihoc.langdhcentre.controller.responses.BaseStoreResponse;
 import com.langdaihoc.langdhcentre.dto.BaseStoreDTO;
 import com.langdaihoc.langdhcentre.entity.mainEntity.BaseStore;
 import com.langdaihoc.langdhcentre.exception.JsonConvertException;
@@ -45,7 +45,7 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
     }
 
     /**
-     * @param apiRequest
+     * @param apiRequest :
      * @return true if apiRequest != null && apiRequest.getInput() != null , otherwise return false
      */
     public boolean validateRequest(SearchBaseStoreRequest apiRequest) {
@@ -90,14 +90,12 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
 
     private BaseStoreResponse responseWithData(List<BaseStoreDTO> output) {
         BaseStoreResponse response = new BaseStoreResponse();
-        response.accepted();
         response.setOutput(output);
         return response;
     }
 
     private BaseStoreResponse responseWithEmptyData() {
         BaseStoreResponse response = new BaseStoreResponse();
-        response.accepted();
         //response.setMessageForEmptyData
         return response;
     }
@@ -109,16 +107,14 @@ public class BaseStoreServiceImpl implements IBaseStoreService {
      */
     public ApiResponse responseWithInvalidRequest() {
         ApiResponse response = new ApiResponse();
-        ApiResponse.ErrorItem errorItem = response.new ErrorItem();
-        Integer act = null;
-        String codeErr = "empty code";
-        List<String> msgParams = new ArrayList<>();
-        msgParams.add("responseWithInvalidRequest");
+        ApiResponse.Error error = response.new Error();
+        response.setError(error);
 
-        errorItem.setCode(codeErr);
-        errorItem.setAct(act);
-        errorItem.setMsgParams(msgParams);
-        response.addErrorItem(errorItem);
+        String code = "Invalid Request Code";
+        String message = "Invalid Request Message";
+        ApiResponse.ErrorItem errorItem = response.new ErrorItem(code,message);
+        error.addErrorItem(errorItem);
+
         return response;
     }
 

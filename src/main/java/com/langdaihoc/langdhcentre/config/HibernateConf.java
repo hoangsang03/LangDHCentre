@@ -1,9 +1,9 @@
 package com.langdaihoc.langdhcentre.config;
 
 import com.google.common.base.Preconditions;
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +21,10 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan({ "com.langdaihoc.langdhcentre", "com.langdaihoc.langdhcentre.repository" })
 @PropertySource({ "classpath:persistence-mysql.properties" })
+@RequiredArgsConstructor
 public class HibernateConf {
 
-    @Autowired
-    private Environment env;
+    final private Environment env;
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {

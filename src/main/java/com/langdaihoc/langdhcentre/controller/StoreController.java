@@ -1,6 +1,6 @@
 package com.langdaihoc.langdhcentre.controller;
 
-import com.langdaihoc.langdhcentre.controller.responseentity.BaseStoreResponse;
+import com.langdaihoc.langdhcentre.controller.responses.BaseStoreResponse;
 import com.langdaihoc.langdhcentre.dto.BaseStoreDTO;
 import com.langdaihoc.langdhcentre.service.IBaseStoreService;
 import com.langdaihoc.langdhcentre.util.ObjectMapperUtils;

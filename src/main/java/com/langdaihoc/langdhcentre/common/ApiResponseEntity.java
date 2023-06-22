@@ -74,7 +74,7 @@ public class ApiResponseEntity {
             if (output instanceof Map<?, ?>) {
                 mapObject = (Map<String, Object>) output;
             } else {
-                log.warn("異なる型が戻り値として設定されています。既に設定されている値は上書きされます。");
+                log.warn("");
                 log.warn("[OLD]" + output.toString());
                 log.warn("[NEW]" + output_obj.toString());
                 mapObject = new HashMap<String, Object>();
@@ -86,13 +86,13 @@ public class ApiResponseEntity {
     }
 
     /**
-     * 戻り値の設定（利用者側で構築したObjectをセットする場合）
+     *
      *
      * @param obj
      */
     public void addOutput(Object obj) {
         if (output != null) {
-            log.warn("異なる型が戻り値として設定されています。既に設定されている値は上書きされます。");
+            log.warn("");
             log.warn("[OLD]" + output.toString());
             log.warn("[NEW]" + obj.toString());
             output = null;

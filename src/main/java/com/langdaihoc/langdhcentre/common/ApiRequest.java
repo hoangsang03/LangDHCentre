@@ -1,8 +1,8 @@
 package com.langdaihoc.langdhcentre.common;
 
-import lombok.*;
-
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter

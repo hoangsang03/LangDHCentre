@@ -4,7 +4,7 @@ import com.langdaihoc.langdhcentre.common.ApiRequest;
 import com.langdaihoc.langdhcentre.common.ApiResponse;
 import com.langdaihoc.langdhcentre.controller.form.GetBaseStoreRequest;
 import com.langdaihoc.langdhcentre.controller.form.SearchBaseStoreRequest;
-import com.langdaihoc.langdhcentre.controller.responseentity.BaseStoreResponse;
+import com.langdaihoc.langdhcentre.controller.responses.BaseStoreResponse;
 import com.langdaihoc.langdhcentre.dto.BaseStoreDTO;
 import com.langdaihoc.langdhcentre.repository.common.Filter;
 import org.springframework.stereotype.Service;
