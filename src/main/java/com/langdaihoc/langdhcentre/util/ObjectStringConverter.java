@@ -2,6 +2,7 @@ package com.langdaihoc.langdhcentre.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.langdaihoc.langdhcentre.exception.JsonConvertException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,6 @@ public class ObjectStringConverter {
     }
 
     /**
-     * オブジェクトからJSON文字列に変換用メソッド
      *
      * @param object
      * @return
@@ -40,13 +40,12 @@ public class ObjectStringConverter {
             String jsonStr = getMapper().writeValueAsString(object);
             return jsonStr;
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new Exception("オブジェクトをJSON文字列に変換することができませんでした", ex);
+            throw new JsonConvertException(ex.getMessage(),ex);
         }
     }
 
     /**
-     * MapからJSON文字列に変換用メソッド
+     *
      *
      * @param objMap
      * @return
@@ -57,13 +56,12 @@ public class ObjectStringConverter {
 
             return jsonStr;
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new Exception("Map<String, Object> objMap をJSON文字列に変換することができませんでした", ex);
+            throw new JsonConvertException(ex.getMessage(),ex);
         }
     }
 
     /**
-     * JSON文字列からオブジェクトに変換用メソッド
+     * JSON
      *
      * @param <T>
      * @param jsonStr
@@ -77,8 +75,7 @@ public class ObjectStringConverter {
 
             return (T) getMapper().readValue(jsonStr, valueType);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new Exception("JSON文字列をオブジェクトに変換することができませんでした", ex);
+            throw new JsonConvertException(ex.getMessage(),ex);
         }
     }
 
