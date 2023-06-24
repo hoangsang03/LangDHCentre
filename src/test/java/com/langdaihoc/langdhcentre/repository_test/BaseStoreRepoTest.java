@@ -1,17 +1,15 @@
 package com.langdaihoc.langdhcentre.repository_test;
 
-import com.langdaihoc.langdhcentre.common.StoreTypeConstant;
-import com.langdaihoc.langdhcentre.entity.mainEntity.*;
-import com.langdaihoc.langdhcentre.entity.subEntity.*;
-import com.langdaihoc.langdhcentre.repository.BaseStoreRepo;
-import com.langdaihoc.langdhcentre.repository.CoffeeShopRepo;
-import com.langdaihoc.langdhcentre.repository.FoodStoreRepo;
-import com.langdaihoc.langdhcentre.repository.common.Filter;
-import com.langdaihoc.langdhcentre.repository.common.QueryOperator;
+import com.langdaihoc.langdhcentre.storeManagement.common.StoreTypeConstant;
+import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.*;
+import com.langdaihoc.langdhcentre.storeManagement.entity.subEntity.*;
+import com.langdaihoc.langdhcentre.storeManagement.repository.BaseStoreRepo;
+import com.langdaihoc.langdhcentre.storeManagement.repository.CoffeeShopRepo;
+import com.langdaihoc.langdhcentre.storeManagement.repository.FoodStoreRepo;
+import com.langdaihoc.langdhcentre.storeManagement.repository.common.Filter;
+import com.langdaihoc.langdhcentre.storeManagement.repository.common.QueryOperator;
 import com.langdaihoc.langdhcentre.util.DateTimeUtil;
-import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.AssertionFailure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.langdaihoc.langdhcentre.repository.BaseStoreRepo.BaseStoreSpecification;
+import com.langdaihoc.langdhcentre.storeManagement.repository.BaseStoreRepo.BaseStoreSpecification;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

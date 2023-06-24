@@ -2,7 +2,7 @@ package com.langdaihoc.langdhcentre.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.langdaihoc.langdhcentre.exception.JsonConvertException;
+import com.langdaihoc.langdhcentre.storeManagement.exception.JsonConvertException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

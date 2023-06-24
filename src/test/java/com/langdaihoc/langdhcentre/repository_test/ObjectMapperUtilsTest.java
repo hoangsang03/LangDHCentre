@@ -2,9 +2,9 @@ package com.langdaihoc.langdhcentre.repository_test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.langdaihoc.langdhcentre.common.ApiRequest;
-import com.langdaihoc.langdhcentre.controller.form.SearchBaseStoreRequest;
-import com.langdaihoc.langdhcentre.exception.JsonConvertException;
+import com.langdaihoc.langdhcentre.storeManagement.common.ApiRequest;
+import com.langdaihoc.langdhcentre.storeManagement.controller.form.SearchBaseStoreRequest;
+import com.langdaihoc.langdhcentre.storeManagement.exception.JsonConvertException;
 import com.langdaihoc.langdhcentre.util.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
