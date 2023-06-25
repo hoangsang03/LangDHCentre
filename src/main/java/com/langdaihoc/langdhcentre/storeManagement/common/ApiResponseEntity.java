@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.langdaihoc.langdhcentre.util.DateUtil;
+import com.langdaihoc.langdhcentre.util.DateTimeUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -146,10 +146,10 @@ public class ApiResponseEntity {
 
 
     public void setDictionaryUpdateTimestamp() {
-        this.head.setDictionaryUpdate(DateUtil.longNow());
+        this.head.setDictionaryUpdate(DateTimeUtil.longNow());
     }
 
     public void setStationUpdateTimestamp() {
-        this.head.setStationUpdate(DateUtil.longNow());
+        this.head.setStationUpdate(DateTimeUtil.longNow());
     }
 }

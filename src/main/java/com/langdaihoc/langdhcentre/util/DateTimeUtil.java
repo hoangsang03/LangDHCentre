@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.Date;
+import java.util.TimeZone;
 
 @Slf4j
 public class DateTimeUtil {
@@ -104,6 +105,30 @@ public class DateTimeUtil {
         } catch (ParseException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public static Date now(){
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        simpleDateFormat.setTimeZone(TimeZone.getDefault());
+        simpleDateFormat.format(date);
+        return date;
+    }
+
+    private static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    public static long longNow(){
+        return now().getTime();
     }
 
 }
