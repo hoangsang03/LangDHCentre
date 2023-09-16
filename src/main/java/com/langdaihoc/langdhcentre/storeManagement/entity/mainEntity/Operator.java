@@ -22,11 +22,11 @@ public class Operator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "operator_id", nullable = false)
-    private Long operatorId;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "operator_name")
-    private String operatorName;
+    @Column(name = "Name")
+    private String name;
 
     @OneToMany(mappedBy = "createByOperator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default

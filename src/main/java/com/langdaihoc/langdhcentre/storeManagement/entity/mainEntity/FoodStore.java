@@ -12,7 +12,7 @@ import lombok.*;
 @Entity
 public class FoodStore extends BaseStore{
     {
-        this.setStoreType(StoreTypeConstant.FOOD_STORE);
+        this.setType(StoreTypeConstant.FOOD_STORE);
         //
         this.setFoodType("food type");
     }

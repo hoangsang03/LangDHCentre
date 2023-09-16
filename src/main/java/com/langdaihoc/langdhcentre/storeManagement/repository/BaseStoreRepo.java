@@ -34,7 +34,7 @@ public interface BaseStoreRepo extends JpaRepository<BaseStore, Long>,
 
         static Specification<BaseStore> likeName(String storeName) {
             return ((root, query, criteriaBuilder) ->
-                    (criteriaBuilder.like((root.get(BaseStore_.storeName)), storeName)));
+                    (criteriaBuilder.like((root.get(BaseStore_.NAME)), storeName)));
         }
 
         /**
@@ -43,7 +43,7 @@ public interface BaseStoreRepo extends JpaRepository<BaseStore, Long>,
          */
         static Specification<BaseStore> byId(long storeId) {
             return (root, query, criteriaBuilder) ->
-                    (criteriaBuilder.equal(root.get(BaseStore_.storeId), storeId));
+                    (criteriaBuilder.equal(root.get(BaseStore_.ID), storeId));
         }
 
         //<editor-fold desc="specification for boolean attributes">
@@ -273,7 +273,7 @@ public interface BaseStoreRepo extends JpaRepository<BaseStore, Long>,
      * @param storeId   : primary key of stores
      * @return : BaseStore with given dtype and store_id
      */
-    @Query(value = "select * from stores s where s.store_type = :storeType and s.store_id = :storeId"
+    @Query(value = "select * from stores s where s.Type = :storeType and s.Id = :storeId"
             , nativeQuery = true)
     BaseStore getStoreWithStoreTypeAndStoreId(@Param("storeType") int storeType,
                                               @Param("storeId") long storeId);

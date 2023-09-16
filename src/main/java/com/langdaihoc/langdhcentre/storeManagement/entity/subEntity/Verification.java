@@ -19,22 +19,22 @@ import java.util.Date;
 public class Verification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "verification_id", nullable = false)
-    private Long verificationId;
+    @Column(name = "Id", nullable = false)
+    private Long id;
 
-    @Column(name = "verification_name")
-    private String verificationName;
+    @Column(name = "Name")
+    private String name;
 
     @Column(name = "created_date")
     @CreationTimestamp
     private Date createdDate;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "operator_id", referencedColumnName = "operator_id")
+    @JoinColumn(nullable = false, name = "operator_id", referencedColumnName = "id")
     private Operator operator;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "id")
     private BaseStore store;
 
 }

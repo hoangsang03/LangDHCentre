@@ -24,7 +24,7 @@ public class StoreImage {
     private Long imageId;
 
     @ManyToOne(cascade = CascadeType.ALL , fetch =  FetchType.LAZY)
-    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(name = "store_id", referencedColumnName = "id")
     private BaseStore store;
 
 

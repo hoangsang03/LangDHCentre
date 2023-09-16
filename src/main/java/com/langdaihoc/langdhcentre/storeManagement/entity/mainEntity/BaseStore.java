@@ -43,15 +43,15 @@ public class BaseStore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "store_id")
-    private Long storeId;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "store_type", nullable = false)
+    @Column(name = "type", nullable = false)
     @Builder.Default
-    protected int storeType = StoreTypeConstant.BASE_STORE;
+    protected int type = StoreTypeConstant.BASE_STORE;
 
-    @Column(name = "store_name")
-    private String storeName;
+    @Column(name = "name")
+    private String name;
 
     /**
      * if isStarted is true, it means this store has started business
@@ -61,12 +61,63 @@ public class BaseStore {
     @Builder.Default
     private boolean isStarted = false;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "province_code", referencedColumnName = "Code")
+    private Province province;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "district_code", referencedColumnName = "Code")
+    private District district;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ward_code", referencedColumnName = "Code")
+    private Ward ward;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "street_code", referencedColumnName = "Code")
+    private Street street;
+
+    @Column(name = "FullAddress")
+    private String fullAddress;
+
+    @Column(name = "Latitude")
+    private String latitude;
+
+    @Column(name = "Longitude")
+    private String longitude;
+
+    @Column(name = "PhoneNumber")
+    private String phoneNumber;
+
+    @Column(name = "EmailAddress")
+    private String emailAddress;
+
+
+    @Column(name = "Website")
+    private String website;
+
+    @Column(name = "Description")
+    private String description;
+
+
+    @Column(name = "Logo")
+    private String logo;
+
+    @Column(name = "TopStoreOrder")
+    private int topStoreOrder;
+
+    @Column(name = "IsForceOpen")
+    private boolean isForceOpen;
+
+    @Column(name = "IsForceClose")
+    private boolean isForceClose;
+
     /**
      * if isShutdown is true, it means this store has stopped business
      * -> then customer cannot see it
      * default it is false when initialize
      */
-    @Column(name = "is_shutdown")
+    @Column(name = "isShutdown")
     @Builder.Default
     private boolean isShutdown = false;
 
@@ -104,7 +155,7 @@ public class BaseStore {
      * is isHidden = true: no one can see it on web except authorized operator
      * default: isHidden = false: everyone can see it
      */
-    @Column(name = "is_hidden")
+    @Column(name = "isHidden")
     @Builder.Default
     private boolean isHidden = false;
 
@@ -130,20 +181,20 @@ public class BaseStore {
     private String storeUrl;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "owner_id", nullable = false, referencedColumnName = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false, referencedColumnName = "id")
     private Owner owner;
 
     /**
-     * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
+     * document for @LazyToOne: <a href="https://vladmihalcea.com/hibernate-lazytoone-annotation/">@LazyToOne</a>
      */
-    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    @LazyToOne(LazyToOneOption.NO_PROXY)
-    @NotNull
-    private Address address;
+//    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
+//    @NotNull
+//    private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "area_id", referencedColumnName = "area_id")
+    @JoinColumn(name = "area_id", referencedColumnName = "id")
     private Area area;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "store")
@@ -167,7 +218,7 @@ public class BaseStore {
     private List<StoreImage> storeImages = new ArrayList<>();
 
     /**
-     * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
+     * document for @LazyToOne: <a href="https://vladmihalcea.com/hibernate-lazytoone-annotation/">@LazyToOne</a>
      */
     @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @LazyToOne(LazyToOneOption.NO_PROXY)
@@ -198,12 +249,12 @@ public class BaseStore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseStore baseStore = (BaseStore) o;
-        return isStarted == baseStore.isStarted && isShutdown == baseStore.isShutdown && isAutoOpenSetting == baseStore.isAutoOpenSetting && isOpening == baseStore.isOpening && isHidden == baseStore.isHidden && storeId.equals(baseStore.storeId) && storeName.equals(baseStore.storeName) && Objects.equals(openingTime, baseStore.openingTime) && Objects.equals(closingTime, baseStore.closingTime) && Objects.equals(createdDate, baseStore.createdDate) && Objects.equals(operationStartDate, baseStore.operationStartDate) && Objects.equals(operationEndDate, baseStore.operationEndDate);
+        return isStarted == baseStore.isStarted && isShutdown == baseStore.isShutdown && isAutoOpenSetting == baseStore.isAutoOpenSetting && isOpening == baseStore.isOpening && isHidden == baseStore.isHidden && id.equals(baseStore.id) && name.equals(baseStore.name) && Objects.equals(openingTime, baseStore.openingTime) && Objects.equals(closingTime, baseStore.closingTime) && Objects.equals(createdDate, baseStore.createdDate) && Objects.equals(operationStartDate, baseStore.operationStartDate) && Objects.equals(operationEndDate, baseStore.operationEndDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(storeId, storeName, isStarted, isShutdown, openingTime, closingTime, isAutoOpenSetting, isOpening, isHidden, createdDate, operationStartDate, operationEndDate);
+        return Objects.hash(id, name, isStarted, isShutdown, openingTime, closingTime, isAutoOpenSetting, isOpening, isHidden, createdDate, operationStartDate, operationEndDate);
     }
 
     //<editor-fold desc="addObjectIntoList">
@@ -270,11 +321,11 @@ public class BaseStore {
     //</editor-fold>
 
     //<editor-fold desc="UpdateAddress&Menu">
-    public Address updateAdress(@NotNull Address addressInput) {
-        addressInput.setStore(this);
-        this.address = addressInput;
-        return this.address;
-    }
+//    public Address updateAdress(@NotNull Address addressInput) {
+//        addressInput.setStore(this);
+//        this.address = addressInput;
+//        return this.address;
+//    }
 
     public Menu updateMenu(@NotNull Menu menuInput) {
         menuInput.setStore(this);
@@ -331,8 +382,8 @@ public class BaseStore {
     @Override
     public String toString() {
         return "BaseStore{" +
-                "storeId=" + storeId +
-                ", storeName='" + storeName + '\'' +
+                "storeId=" + id +
+                ", storeName='" + name + '\'' +
                 ", isStarted=" + isStarted +
                 ", isShutdown=" + isShutdown +
                 ", openingTime=" + openingTime +

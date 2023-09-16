@@ -21,7 +21,7 @@ public class Revenue {
     private Long revenueId;
 
     @ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "id")
     private BaseStore store;
 
     @OneToOne(mappedBy = "revenue", cascade = CascadeType.ALL)

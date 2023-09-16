@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 public class CoffeeShop extends BaseStore {
     {
-        this.setStoreType(StoreTypeConstant.COFFEE_SHOP);
+        this.setType(StoreTypeConstant.COFFEE_SHOP);
         this.setCoffeeType("coffee type");
     }
 
@@ -25,7 +25,7 @@ public class CoffeeShop extends BaseStore {
     public String toString() {
         return "CoffeeShop{" +
                 "coffeeType='" + coffeeType + '\'' +
-                ", storeType=" + storeType +
+                ", storeType=" + type +
                 ", super=" + super.toString() +
                 '}';
     }

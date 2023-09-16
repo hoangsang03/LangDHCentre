@@ -24,7 +24,7 @@ public class RentalFee {
     private Long rentalFeeId;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "id")
     private BaseStore store;
 
     @Column(name = "created_date")
@@ -41,7 +41,7 @@ public class RentalFee {
     private BigDecimal moneyNumber;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "created_operator_id", referencedColumnName = "operator_id")
+    @JoinColumn(nullable = false, name = "created_operator_id", referencedColumnName = "id")
     private Operator createByOperator;
 
 

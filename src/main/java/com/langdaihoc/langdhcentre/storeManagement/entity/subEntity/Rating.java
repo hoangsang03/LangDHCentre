@@ -29,7 +29,7 @@ public class Rating {
     private String ratingContent;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "id")
     private BaseStore store;
 
     @OneToMany(mappedBy = "rating",cascade =  CascadeType.ALL, fetch =  FetchType.LAZY)
