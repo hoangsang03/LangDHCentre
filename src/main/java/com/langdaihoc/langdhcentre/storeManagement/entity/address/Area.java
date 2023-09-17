@@ -1,5 +1,6 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.subEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.address;
 
+import com.langdaihoc.langdhcentre.storeManagement.entity.common.AbstractEntity;
 import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.BaseStore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,22 +18,22 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table( name = "areas")
-public class Area {
+public class Area extends AbstractEntity {
     protected Area(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "area_id", nullable = false)
-    private Long areaId;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "area_name")
-    private String nameArea;
+    @Column(name = "name")
+    private String name;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "nearly_area",
-            joinColumns = @JoinColumn(name = "area_id", referencedColumnName = "area_id"),
-            inverseJoinColumns = @JoinColumn(name = "nearly_area_id", referencedColumnName = "area_id")
+            joinColumns = @JoinColumn(name = "Id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "nearly_area_id", referencedColumnName = "id")
     )
     @Builder.Default
     private List<Area> nearAreas = new ArrayList<>();
@@ -45,19 +46,19 @@ public class Area {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Area area = (Area) o;
-        return Objects.equals(areaId, area.areaId) && Objects.equals(nameArea, area.nameArea);
+        return Objects.equals(id, area.id) && Objects.equals(name, area.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(areaId, nameArea);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "Area{" +
-                "areaId=" + areaId +
-                ", nameArea='" + nameArea + '\'' +
+                "areaId=" + id +
+                ", nameArea='" + name + '\'' +
                 '}';
     }
 

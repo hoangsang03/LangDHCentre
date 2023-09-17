@@ -29,7 +29,7 @@ public class BaseStoreRepoCustomImpl implements BaseStoreRepoCustom {
 
         Root<BaseStore> storeRoot = query.from(BaseStore.class);
 
-        Path<String> id = storeRoot.get("storeId");
+        Path<String> id = storeRoot.get("Id");
         List<Predicate> predicateList = new ArrayList<>();
         predicateList.add(cb.equal(id, storeId));
 

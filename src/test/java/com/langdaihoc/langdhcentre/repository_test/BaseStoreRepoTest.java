@@ -1,7 +1,14 @@
 package com.langdaihoc.langdhcentre.repository_test;
 
 import com.langdaihoc.langdhcentre.storeManagement.common.StoreTypeConstant;
+import com.langdaihoc.langdhcentre.storeManagement.entity.address.Area;
+import com.langdaihoc.langdhcentre.storeManagement.entity.auth.Customer;
+import com.langdaihoc.langdhcentre.storeManagement.entity.auth.Operator;
+import com.langdaihoc.langdhcentre.storeManagement.entity.auth.Owner;
 import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.*;
+import com.langdaihoc.langdhcentre.storeManagement.entity.store.StoreCategory;
+import com.langdaihoc.langdhcentre.storeManagement.entity.store.StoreImage;
+import com.langdaihoc.langdhcentre.storeManagement.entity.store.StoreRating;
 import com.langdaihoc.langdhcentre.storeManagement.entity.subEntity.*;
 import com.langdaihoc.langdhcentre.storeManagement.repository.BaseStoreRepo;
 import com.langdaihoc.langdhcentre.storeManagement.repository.CoffeeShopRepo;
@@ -55,7 +62,7 @@ public class BaseStoreRepoTest {
     @DisplayName("createNewBaseStore test")
     public void createNewDefaultBaseStore() {
         Owner newOwner2 = Owner.builder()
-                .ownerName("admin")
+                .name("admin")
                 .build();
         BaseStore newEmptyBaseStore = BaseStore.builder()
                 .owner(newOwner2)
@@ -67,7 +74,7 @@ public class BaseStoreRepoTest {
     @DisplayName("createNewCoffeeShop test")
     public void createNewDefaultCoffeeShop() {
         Owner newOwner2 = Owner.builder()
-                .ownerName("admin")
+                .name("admin")
                 .build();
         CoffeeShop coffeeShop = new CoffeeShop();
         coffeeShop.setOwner(newOwner2);
@@ -79,7 +86,7 @@ public class BaseStoreRepoTest {
     @DisplayName("createNewFoodStoreWithoutSettingAnyValues test")
     public void createNewDefaultFoodStore() {
         Owner newOwner = Owner.builder()
-                .ownerName("admin")
+                .name("admin")
                 .build();
         FoodStore newEmptyFoodStore = new FoodStore();
         newEmptyFoodStore.setOwner(newOwner);
@@ -141,52 +148,52 @@ public class BaseStoreRepoTest {
         LocalDate operationEndDate = LocalDate.now().plusMonths(3);
         String storeUrl = "storeUrl";
         FoodStore newFoodStore = new FoodStore();
-        newFoodStore.setStoreName(storeName);
+        newFoodStore.setName(storeName);
         newFoodStore.setOpeningTime(openingTime);
         newFoodStore.setClosingTime(closingTime);
         newFoodStore.setOperationStartDate(DateTimeUtil.convertToDateViaInstant(operationStartDate));
         newFoodStore.setOperationEndDate(DateTimeUtil.convertToDateViaInstant(operationEndDate));
         newFoodStore.setStoreUrl(storeUrl);
 
-        Owner newOwner = Owner.builder().ownerName("ownerName").build();
+        Owner newOwner = Owner.builder().name("ownerName").build();
         newFoodStore.setOwner(newOwner);
 
         Address newAddress = Address.builder().city("HCM").ward("7").store(newFoodStore).build();
-        newFoodStore.setAddress(newAddress);
+        //newFoodStore.setAddress(newAddress);
 
-        Area newArea = Area.builder().nameArea("LangDH").build();
+        Area newArea = Area.builder().name("LangDH").build();
         newFoodStore.setArea(newArea);
 
-        Verification newVerification = Verification.builder().verificationName("verificationName")
-                .operator(Operator.builder().operatorName("operator name").build()).build();
-        Verification newVerification2 = Verification.builder().verificationName("verificationName2")
-                .operator(Operator.builder().operatorName("operator name 2").build()).build();
+        Verification newVerification = Verification.builder().name("verificationName")
+                /*.operator(Operator.builder().name("operator name").build())*/.build();
+        Verification newVerification2 = Verification.builder().name("verificationName2")
+                /*.operator(Operator.builder().name("operator name 2").build())*/.build();
         newFoodStore.addVerification(newVerification);
         newFoodStore.addVerification(newVerification2);
 
         Revenue newRevenue = Revenue.builder().totalMonthRevenue(BigDecimal.valueOf(1_000_000_000)).build();
         Revenue newRevenue2 = Revenue.builder().totalMonthRevenue(BigDecimal.valueOf(1_000_000_002)).build();
-        newFoodStore.addRevenue(newRevenue);
-        newFoodStore.addRevenue(newRevenue2);
+        //newFoodStore.addRevenue(newRevenue);
+        //newFoodStore.addRevenue(newRevenue2);
 
         RentalFee newRentalFee = RentalFee.builder().month(LocalDate.now().getMonthValue()).build();
         RentalFee newRentalFee2 = RentalFee.builder().month(LocalDate.now().plusMonths(1).getMonthValue()).build();
-        newRentalFee.setCreateByOperator(Operator.builder().operatorName("operator name").build());
-        newRentalFee2.setCreateByOperator(Operator.builder().operatorName("operator name 2").build());
+        //newRentalFee.setCreateByOperator(Operator.builder().name("operator name").build());
+        //newRentalFee2.setCreateByOperator(Operator.builder().name("operator name 2").build());
         newFoodStore.addRentalFee(newRentalFee);
         newFoodStore.addRentalFee(newRentalFee2);
 
-        Customer customer = Customer.builder().customerName("customerName1").build();
-        Customer customer2 = Customer.builder().customerName("customerName2").build();
-        Rating newRating = Rating.builder().ratingScore(7).customer(customer).store(newFoodStore).build();
-        Rating newRating2 = Rating.builder().ratingScore(8).store(newFoodStore).customer(customer2).build();
+        Customer customer = Customer.builder().name("customerName1").build();
+        Customer customer2 = Customer.builder().name("customerName2").build();
+        StoreRating newRating = StoreRating.builder().score(7).customer(customer).store(newFoodStore).build();
+        StoreRating newRating2 = StoreRating.builder().score(8).store(newFoodStore).customer(customer2).build();
         newFoodStore.addRating(newRating);
         newFoodStore.addRating(newRating2);
 
-        StoreImage storeImage = StoreImage.builder().imageUrl("url/image/1").build();
-        StoreImage storeImage2 = StoreImage.builder().imageUrl("url/image/2").build();
-        newFoodStore.addStoreImage(storeImage);
-        newFoodStore.addStoreImage(storeImage2);
+//        StoreImage storeImage = StoreImage.builder().("url/image/1").build();
+//        StoreImage storeImage2 = StoreImage.builder().imageUrl("url/image/2").build();
+//        newFoodStore.addStoreImage(storeImage);
+//        newFoodStore.addStoreImage(storeImage2);
 
         // need to add food, beverage, otherService into menu
         Menu menu = Menu.builder().build();
@@ -208,20 +215,20 @@ public class BaseStoreRepoTest {
                 .servicePrice(BigDecimal.valueOf(5_002)).build();
         menu.addOtherService(newOtherService);
         menu.addOtherService(newOtherService2);
-        newFoodStore.updateMenu(menu);
+        //newFoodStore.updateMenu(menu);
 
-        Category category = Category.builder().categoryName("categoryName").build();
-        Category category2 = Category.builder().categoryName("categoryName2").build();
+        StoreCategory category = StoreCategory.builder().name("categoryName").build();
+        StoreCategory category2 = StoreCategory.builder().name("categoryName2").build();
         newFoodStore.addCategory(category);
         newFoodStore.addCategory(category2);
 
-        Utility newUtility = Utility.builder().utilityName("utilityName").build();
-        Utility newUtility2 = Utility.builder().utilityName("utilityName2").build();
+        Utility newUtility = Utility.builder().name("utilityName").build();
+        Utility newUtility2 = Utility.builder().name("utilityName2").build();
         newFoodStore.addUtility(newUtility);
         newFoodStore.addUtility(newUtility2);
 
         FoodStore savedFoodStore = this.foodStoreRepo.save(newFoodStore);
-        long storeId = savedFoodStore.getStoreId();
+        long storeId = savedFoodStore.getId();
         System.out.println("StoreId: " + storeId);
         Optional<FoodStore> foodStoreRepoById = this.foodStoreRepo.findById(storeId);
         FoodStore foodStore = foodStoreRepoById.orElse(null);
@@ -260,7 +267,7 @@ public class BaseStoreRepoTest {
     @Test
     public void findByStoreIdTest() {
         long storeId = 3;
-        Optional<FoodStore> foodStoreOptional = this.foodStoreRepo.getFoodStoreByStoreId(storeId);
+        Optional<FoodStore> foodStoreOptional = this.foodStoreRepo.getFoodStoreById(storeId);
 
         FoodStore foodStore = foodStoreOptional.orElse(null);
         if (foodStore != null) {
@@ -289,25 +296,25 @@ public class BaseStoreRepoTest {
         List<FoodStore> storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList.size());
-        storeNameList.forEach(s -> System.out.println(s.getStoreName()));
+        storeNameList.forEach(s -> System.out.println(s.getName()));
 
         storeName = "2";
         List<FoodStore> storeNameList2 = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList2.size());
-        storeNameList2.forEach(s -> System.out.println(s.getStoreName()));
+        storeNameList2.forEach(s -> System.out.println(s.getName()));
 
         storeName = "storeName";
         storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList.size());
-        storeNameList.forEach(s -> System.out.println(s.getStoreName()));
+        storeNameList.forEach(s -> System.out.println(s.getName()));
 
         storeName = "storeName2";
         storeNameList = this.foodStoreRepo.findFoodStoreByByName2(storeName);
         System.out.println("condition storeName Like " + storeName);
         System.out.println("storeNameList.size() : " + storeNameList.size());
-        storeNameList.forEach(s -> System.out.println(s.getStoreName()));
+        storeNameList.forEach(s -> System.out.println(s.getName()));
     }
 
     @Test
@@ -344,7 +351,7 @@ public class BaseStoreRepoTest {
         BaseStore baseStore;
         if (baseStoreOptional.isPresent()) {
             baseStore = baseStoreOptional.get();
-            log.debug("storeType: " + baseStore.getStoreType());
+            log.debug("storeType: " + baseStore.getType());
             if (baseStore instanceof FoodStore) {
                 FoodStore foodStore = (FoodStore) baseStore;
                 log.debug("baseStore is instance of FoodStore");
@@ -407,7 +414,7 @@ public class BaseStoreRepoTest {
             log.debug("baseStoreLikeName.size(): " + baseStoreLikeName.size());
             baseStoreLikeName.forEach(s -> {
                         log.debug(s.getClass().getSimpleName());
-                        log.debug("store_id: " + s.getStoreId());
+                        log.debug("store_id: " + s.getId());
                         log.debug("opening_time: " + s.getOpeningTime());
                         log.debug("closing_time: " + s.getClosingTime());
                     }
@@ -451,7 +458,7 @@ public class BaseStoreRepoTest {
             log.debug("storeList.size(): " + storeList.size());
             storeList.forEach(s -> {
                         log.debug(s.getClass().getSimpleName());
-                        log.debug("store_id: " + s.getStoreId());
+                        log.debug("store_id: " + s.getId());
                         log.debug("opening_time: " + s.getOpeningTime());
                         log.debug("closing_time: " + s.getClosingTime());
                     }

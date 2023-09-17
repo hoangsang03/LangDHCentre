@@ -1,4 +1,4 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.auth;
 
 import jakarta.persistence.*;
 

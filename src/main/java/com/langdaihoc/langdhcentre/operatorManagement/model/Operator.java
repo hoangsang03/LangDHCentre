@@ -37,8 +37,8 @@ public class Operator implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "operator_id")
-    private Integer operatorId;
+    @Column(name = "Id")
+    private Integer Id;
 
     @Column(name = "email_address", nullable = false)
     private String email;

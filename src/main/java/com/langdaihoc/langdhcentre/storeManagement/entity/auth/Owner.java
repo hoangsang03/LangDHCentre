@@ -1,5 +1,6 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.auth;
 
+import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.BaseStore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +19,11 @@ public class Owner {
     protected Owner(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "owner_id", nullable = false)
-    private Long ownerId;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "owner_name", nullable = false)
-    private String ownerName;
+    @Column(name = "Name", nullable = false)
+    private String name;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "owner")
     private List<BaseStore> stores;

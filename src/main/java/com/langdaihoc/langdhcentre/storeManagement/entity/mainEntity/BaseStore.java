@@ -2,17 +2,20 @@ package com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.langdaihoc.langdhcentre.storeManagement.common.StoreTypeConstant;
+import com.langdaihoc.langdhcentre.storeManagement.entity.address.*;
+import com.langdaihoc.langdhcentre.storeManagement.entity.auth.Owner;
+import com.langdaihoc.langdhcentre.storeManagement.entity.common.AbstractEntity;
+import com.langdaihoc.langdhcentre.storeManagement.entity.store.StoreCategory;
+import com.langdaihoc.langdhcentre.storeManagement.entity.store.StoreImage;
+import com.langdaihoc.langdhcentre.storeManagement.entity.store.StoreRating;
 import com.langdaihoc.langdhcentre.storeManagement.entity.subEntity.*;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 
 
 import java.time.LocalTime;
@@ -21,14 +24,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "store_type",
+        discriminatorType = DiscriminatorType.INTEGER)
 @Table(name = "stores")
-public class BaseStore {
+public class BaseStore extends AbstractEntity {
     public BaseStore() {
     }
 
@@ -43,15 +48,15 @@ public class BaseStore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "store_id")
-    private Long storeId;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "store_type", nullable = false)
+    @Column(name = "type", nullable = false)
     @Builder.Default
-    protected int storeType = StoreTypeConstant.BASE_STORE;
+    protected int type = StoreTypeConstant.BASE_STORE;
 
-    @Column(name = "store_name")
-    private String storeName;
+    @Column(name = "name")
+    private String name;
 
     /**
      * if isStarted is true, it means this store has started business
@@ -60,6 +65,57 @@ public class BaseStore {
     @Column(name = "is_started")
     @Builder.Default
     private boolean isStarted = false;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "province_code", referencedColumnName = "code")
+    private Province province;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "district_code", referencedColumnName = "code")
+    private District district;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ward_code", referencedColumnName = "code")
+    private Ward ward;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "street_code", referencedColumnName = "code")
+    private Street street;
+
+    @Column(name = "fullAddress")
+    private String fullAddress;
+
+    @Column(name = "latitude")
+    private String latitude;
+
+    @Column(name = "longitude")
+    private String longitude;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "email_address")
+    private String emailAddress;
+
+
+    @Column(name = "website")
+    private String website;
+
+    @Column(name = "description")
+    private String description;
+
+
+    @Column(name = "logo")
+    private String logo;
+
+    @Column(name = "top_store_order")
+    private int topStoreOrder;
+
+    @Column(name = "is_force_open")
+    private boolean isForceOpen;
+
+    @Column(name = "is_force_close")
+    private boolean isForceClose;
 
     /**
      * if isShutdown is true, it means this store has stopped business
@@ -130,29 +186,33 @@ public class BaseStore {
     private String storeUrl;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "owner_id", nullable = false, referencedColumnName = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false, referencedColumnName = "id")
     private Owner owner;
 
     /**
-     * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
+     * document for @LazyToOne: <a href="https://vladmihalcea.com/hibernate-lazytoone-annotation/">@LazyToOne</a>
      */
-    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    @LazyToOne(LazyToOneOption.NO_PROXY)
-    @NotNull
-    private Address address;
+//    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
+//    @NotNull
+//    private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "area_id", referencedColumnName = "area_id")
+    @JoinColumn(name = "area_id", referencedColumnName = "id")
     private Area area;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Product> products = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "store")
     @Builder.Default
     private List<Verification> verifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Revenue> revenues = new ArrayList<>();
+//    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @Builder.Default
+//    private List<Revenue> revenues = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
@@ -160,19 +220,19 @@ public class BaseStore {
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Rating> ratings = new ArrayList<>();
+    private List<StoreRating> ratings = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<StoreImage> storeImages = new ArrayList<>();
 
     /**
-     * document for @LazyToOne: https://vladmihalcea.com/hibernate-lazytoone-annotation/
+     * document for @LazyToOne: <a href="https://vladmihalcea.com/hibernate-lazytoone-annotation/">@LazyToOne</a>
      */
-    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @LazyToOne(LazyToOneOption.NO_PROXY)
-    @PrimaryKeyJoinColumn
-    private Menu menu;
+//    @OneToOne(mappedBy = "store", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
+//    @PrimaryKeyJoinColumn
+//    private Menu menu;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -181,7 +241,7 @@ public class BaseStore {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     @Builder.Default
-    private List<Category> categories = new ArrayList<>();
+    private List<StoreCategory> storeCategories = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -198,12 +258,12 @@ public class BaseStore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseStore baseStore = (BaseStore) o;
-        return isStarted == baseStore.isStarted && isShutdown == baseStore.isShutdown && isAutoOpenSetting == baseStore.isAutoOpenSetting && isOpening == baseStore.isOpening && isHidden == baseStore.isHidden && storeId.equals(baseStore.storeId) && storeName.equals(baseStore.storeName) && Objects.equals(openingTime, baseStore.openingTime) && Objects.equals(closingTime, baseStore.closingTime) && Objects.equals(createdDate, baseStore.createdDate) && Objects.equals(operationStartDate, baseStore.operationStartDate) && Objects.equals(operationEndDate, baseStore.operationEndDate);
+        return isStarted == baseStore.isStarted && isShutdown == baseStore.isShutdown && isAutoOpenSetting == baseStore.isAutoOpenSetting && isOpening == baseStore.isOpening && isHidden == baseStore.isHidden && id.equals(baseStore.id) && name.equals(baseStore.name) && Objects.equals(openingTime, baseStore.openingTime) && Objects.equals(closingTime, baseStore.closingTime) && Objects.equals(createdDate, baseStore.createdDate) && Objects.equals(operationStartDate, baseStore.operationStartDate) && Objects.equals(operationEndDate, baseStore.operationEndDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(storeId, storeName, isStarted, isShutdown, openingTime, closingTime, isAutoOpenSetting, isOpening, isHidden, createdDate, operationStartDate, operationEndDate);
+        return Objects.hash(id, name, isStarted, isShutdown, openingTime, closingTime, isAutoOpenSetting, isOpening, isHidden, createdDate, operationStartDate, operationEndDate);
     }
 
     //<editor-fold desc="addObjectIntoList">
@@ -216,14 +276,14 @@ public class BaseStore {
         return true;
     }
 
-    public boolean addRevenue(Revenue revenueInput) {
-        revenueInput.setStore(this);
-        if (this.revenues == null) {
-            this.revenues = new ArrayList<>();
-        }
-        this.revenues.add(revenueInput);
-        return true;
-    }
+//    public boolean addRevenue(Revenue revenueInput) {
+//        revenueInput.setStore(this);
+//        if (this.revenues == null) {
+//            this.revenues = new ArrayList<>();
+//        }
+//        this.revenues.add(revenueInput);
+//        return true;
+//    }
 
     public boolean addRentalFee(RentalFee rentalFeeInput) {
         rentalFeeInput.setStore(this);
@@ -234,7 +294,7 @@ public class BaseStore {
         return true;
     }
 
-    public boolean addRating(Rating ratingInput) {
+    public boolean addRating(StoreRating ratingInput) {
         ratingInput.setStore(this);
         if (this.ratings == null) {
             this.ratings = new ArrayList<>();
@@ -260,27 +320,27 @@ public class BaseStore {
         return true;
     }
 
-    public boolean addCategory(Category categoryInput) {
-        if (this.categories == null) {
-            this.categories = new ArrayList<>();
+    public boolean addCategory(StoreCategory categoryInput) {
+        if (this.storeCategories == null) {
+            this.storeCategories = new ArrayList<>();
         }
-        this.categories.add(categoryInput);
+        this.storeCategories.add(categoryInput);
         return true;
     }
     //</editor-fold>
 
     //<editor-fold desc="UpdateAddress&Menu">
-    public Address updateAdress(@NotNull Address addressInput) {
-        addressInput.setStore(this);
-        this.address = addressInput;
-        return this.address;
-    }
+//    public Address updateAddress(@NotNull Address addressInput) {
+//        addressInput.setStore(this);
+//        this.address = addressInput;
+//        return this.address;
+//    }
 
-    public Menu updateMenu(@NotNull Menu menuInput) {
-        menuInput.setStore(this);
-        this.menu = menuInput;
-        return this.menu;
-    }
+//    public Menu updateMenu(@NotNull Menu menuInput) {
+//        menuInput.setStore(this);
+//        this.menu = menuInput;
+//        return this.menu;
+//    }
     //</editor-fold>
 
     //<editor-fold desc="SetListObject">
@@ -292,13 +352,13 @@ public class BaseStore {
         return this.verifications != verificationsInput;
     }
 
-    public boolean setRevenues(List<Revenue> revenuesInput) {
-        revenuesInput.forEach(r -> {
-            r.setStore(this);
-        });
-        this.revenues = new ArrayList<>(revenuesInput);
-        return this.revenues != revenuesInput;
-    }
+//    public boolean setRevenues(List<Revenue> revenuesInput) {
+//        revenuesInput.forEach(r -> {
+//            r.setStore(this);
+//        });
+//        this.revenues = new ArrayList<>(revenuesInput);
+//        return this.revenues != revenuesInput;
+//    }
 
     public boolean setRentalFees(List<RentalFee> rentalFeesInput) {
         rentalFeesInput.forEach(r -> {
@@ -308,7 +368,7 @@ public class BaseStore {
         return this.rentalFees != rentalFeesInput;
     }
 
-    public boolean setRatings(List<Rating> ratingsInput) {
+    public boolean setRatings(List<StoreRating> ratingsInput) {
         ratingsInput.forEach(r -> {
             r.setStore(this);
         });
@@ -331,8 +391,8 @@ public class BaseStore {
     @Override
     public String toString() {
         return "BaseStore{" +
-                "storeId=" + storeId +
-                ", storeName='" + storeName + '\'' +
+                "storeId=" + id +
+                ", storeName='" + name + '\'' +
                 ", isStarted=" + isStarted +
                 ", isShutdown=" + isShutdown +
                 ", openingTime=" + openingTime +
