@@ -2,7 +2,7 @@ package com.langdaihoc.langdhcentre.storeManagement.controller.form;
 
 import com.langdaihoc.langdhcentre.storeManagement.common.ApiRequest;
 import com.langdaihoc.langdhcentre.storeManagement.common.StoreTypeConstant;
-import com.langdaihoc.langdhcentre.storeManagement.entity.subEntity.Category;
+import com.langdaihoc.langdhcentre.storeManagement.entity.store.StoreCategory;
 import com.langdaihoc.langdhcentre.storeManagement.entity.subEntity.Utility;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -95,7 +95,7 @@ public class SearchBaseStoreRequest extends ApiRequest<SearchBaseStoreRequest.In
         /**
          * QueryOperator : IN stores have all of categories
          */
-        private List<Category> categories;
+        private List<StoreCategory> categories;
         /**
          * QueryOperator : IN stores have all of utilities
          */

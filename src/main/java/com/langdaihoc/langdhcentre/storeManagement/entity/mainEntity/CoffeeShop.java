@@ -2,6 +2,7 @@ package com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity;
 
 import com.langdaihoc.langdhcentre.storeManagement.common.StoreTypeConstant;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@DiscriminatorValue("2")
 public class CoffeeShop extends BaseStore {
     {
         this.setType(StoreTypeConstant.COFFEE_SHOP);

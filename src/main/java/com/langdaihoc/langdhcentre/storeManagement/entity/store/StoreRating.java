@@ -1,7 +1,7 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.subEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.store;
 
 import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.BaseStore;
-import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.Customer;
+import com.langdaihoc.langdhcentre.storeManagement.entity.auth.Customer;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,29 +13,30 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ratings")
-public class Rating {
+@Table(name = "store_ratings")
+public class StoreRating {
     /**
      * rating + customer + store = unique
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rating_id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "rating_score")
-    private int ratingScore;
+    @Column(name = "score")
+    private int score;
 
-    @Column(name = "rating_content")
-    private String ratingContent;
+    @Column(name = "content")
+    private String content;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "id")
     private BaseStore store;
 
     @OneToMany(mappedBy = "rating",cascade =  CascadeType.ALL, fetch =  FetchType.LAZY)
-    private List<RatingImage> ratingImages;
+    private List<StoreRatingImage> ratingImages;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "customer_id", referencedColumnName = "customer_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 }

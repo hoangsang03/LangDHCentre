@@ -1,4 +1,5 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.subEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.address;
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,12 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Wards")
-public class Ward {
+@Table(name = "streets")
+public class Street {
     @Id
-    @Column(name = "Code")
+    @Column(name = "code")
     private Long Code;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String Name;
 }

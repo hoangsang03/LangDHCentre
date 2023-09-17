@@ -24,15 +24,15 @@ public class Menu {
     protected Menu(){}
     @Id
     @Column(name = "store_id", nullable = false)
-    private Long menuId;
+    private Long id;
 
-    @Column(name = "menu_name")
-    private String menuName;
+    @Column(name = "name")
+    private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @MapsId
-    @LazyToOne(LazyToOneOption.NO_PROXY)
-    private BaseStore store;
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @MapsId
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
+//    private BaseStore store;
 
     @OneToMany(mappedBy = "menu",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
@@ -51,19 +51,19 @@ public class Menu {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Menu menu = (Menu) o;
-        return Objects.equals(menuId, menu.menuId) && Objects.equals(menuName, menu.menuName);
+        return Objects.equals(id, menu.id) && Objects.equals(name, menu.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(menuId, menuName);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "Menu{" +
-                "menuId=" + menuId +
-                ", menuName='" + menuName + '\'' +
+                "menuId=" + id +
+                ", menuName='" + name + '\'' +
                 '}';
     }
 

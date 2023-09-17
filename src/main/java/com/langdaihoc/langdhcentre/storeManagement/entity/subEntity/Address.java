@@ -11,6 +11,9 @@ import org.hibernate.annotations.LazyToOneOption;
 
 import java.util.Objects;
 
+/**
+ * <b style="color:white;">unused</b>
+ */
 @Getter
 @Setter
 @AllArgsConstructor

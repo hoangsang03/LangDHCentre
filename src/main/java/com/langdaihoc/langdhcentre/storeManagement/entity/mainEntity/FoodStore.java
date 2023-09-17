@@ -2,6 +2,7 @@ package com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity;
 
 import com.langdaihoc.langdhcentre.storeManagement.common.StoreTypeConstant;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import lombok.*;
 @Setter
 //@ToString(callSuper = true)
 @Entity
+@DiscriminatorValue("1")
 public class FoodStore extends BaseStore{
     {
         this.setType(StoreTypeConstant.FOOD_STORE);

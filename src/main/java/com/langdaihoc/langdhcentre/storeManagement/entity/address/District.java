@@ -1,4 +1,4 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.subEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.address;
 
 
 import jakarta.persistence.*;
@@ -11,13 +11,13 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @Entity
-@Table(name = "Districts")
+@Table(name = "districts")
 public class District {
     @Id
-    @Column(name = "Code")
+    @Column(name = "code")
     private Long Code;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String Name;
 }
 

@@ -1,5 +1,6 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.auth;
 
+import com.langdaihoc.langdhcentre.storeManagement.entity.auth.BaseUser;
 import jakarta.persistence.*;
 
 @Entity

@@ -17,11 +17,11 @@ import java.util.List;
 public class Utility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "utility_id", nullable = false)
-    private Long utilityId;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "utility_name")
-    private String utilityName;
+    @Column(name = "name")
+    private String name;
 
     @ManyToMany(mappedBy = "utilities", cascade = CascadeType.ALL, fetch =  FetchType.LAZY )
     private List<BaseStore> stores;
@@ -29,8 +29,8 @@ public class Utility {
     @Override
     public String toString() {
         return "Utility{" +
-                "utilityId=" + utilityId +
-                ", utilityName='" + utilityName + '\'' +
+                "utilityId=" + id +
+                ", utilityName='" + name + '\'' +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.auth;
 
+import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.BaseStore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,5 +1,6 @@
-package com.langdaihoc.langdhcentre.storeManagement.entity.subEntity;
+package com.langdaihoc.langdhcentre.storeManagement.entity.address;
 
+import com.langdaihoc.langdhcentre.storeManagement.entity.common.AbstractEntity;
 import com.langdaihoc.langdhcentre.storeManagement.entity.mainEntity.BaseStore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table( name = "areas")
-public class Area {
+public class Area extends AbstractEntity {
     protected Area(){}
 
     @Id
@@ -25,7 +26,7 @@ public class Area {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY)

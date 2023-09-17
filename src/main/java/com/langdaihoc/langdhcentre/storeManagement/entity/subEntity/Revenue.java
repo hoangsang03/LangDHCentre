@@ -6,7 +6,9 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-
+/**
+ * <b style="color:white">unused</b>
+ */
 @Setter
 @Getter
 @Builder
@@ -20,9 +22,9 @@ public class Revenue {
     @Column(name = "revenue_id", nullable = false)
     private Long revenueId;
 
-    @ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "id")
-    private BaseStore store;
+//    @ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false, name = "store_id", referencedColumnName = "id")
+//    private BaseStore store;
 
     @OneToOne(mappedBy = "revenue", cascade = CascadeType.ALL)
     private RevenueDetail revenueDetail;
